@@ -1,0 +1,27 @@
+# Node.js 이미지를 기반으로 시작
+FROM node:18 AS base
+
+# 작업 디렉토리 설정
+WORKDIR /frontend/vuejs/
+
+# package.json과 package-lock.json 복사
+COPY ./vuejs/package*.json ./
+
+RUN npm install
+
+# 개발 단계 설정
+FROM base AS development
+
+# 환경 변수 설정
+ENV NODE_ENV=development
+
+# Vue CLI 설치
+RUN npm install -g @vue/cli
+
+COPY . .
+
+# 기본 포트 노출 (Vue 개발 서버 기본 포트)
+EXPOSE 8080
+
+# Vue 개발 서버 실행 - 호스트 설정 추가
+CMD ["npm", "run", "serve", "--", "--host", "0.0.0.0"]
