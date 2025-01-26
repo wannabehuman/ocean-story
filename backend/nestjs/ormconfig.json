@@ -1,0 +1,11 @@
+{
+    "type": "postgres",
+    "host": "183.103.17.20",
+    "port": 5432,
+    "username": "wonki",
+    "password": "wonki",
+    "database": "ocean_story",
+    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "synchronize": true
+  }
+
