@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
@@ -16,10 +17,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DB_USERNAME,  
       password: process.env.DB_PASSWORD,  
       database: process.env.DB_NAME,      
-      entities: [],  
+      autoLoadEntities:true,
       synchronize: true,  // 테이블을 자동으로 동기화
       logging: true,      // SQL 로그 콘솔 출력. 분명... 연결은 됐는데?
     }),
+    PostModule
   ],
   controllers: [AppController],
   providers: [AppService],

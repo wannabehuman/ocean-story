@@ -8,7 +8,7 @@ export class AppController {
 
   @Get('data')
   getData() {
-    return { message: '바다이야기에 오신 것을 환영합니다' };
+    return { message: '바다이야기에 오신 것을 환영합니다!!' };
   }
   @Get()
   getHello(): string {
