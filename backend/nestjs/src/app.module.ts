@@ -5,8 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './modules/post/post.module';
 
-import { TypeOrmModule } from '@nestjs/typeorm'; //type orm 추가
-import { VisitorCountModule } from './modules/visitor-count/visitor-count.module'; // visitor모듈 생성한거 추가가
+// import { TypeOrmModule } from '@nestjs/typeorm'; //type orm 추가
+// import { VisitorCountModule } from './modules/visitor-count/visitor-count.module'; // visitor모듈 생성한거 추가가
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { VisitorCountModule } from './modules/visitor-count/visitor-count.module
       logging: true,      // SQL 로그 콘솔 출력. 분명... 연결은 됐는데?
     }),
     PostModule,
-    VisitorCountModule,
+    // VisitorCountModule,
   ],
   controllers: [AppController],
   providers: [AppService],
