@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './modules/post/post.module';
+import { WeatherForecastsHModule } from './modules/weather_forecasts_H/weather_forecasts_H.module';
 
 // import { TypeOrmModule } from '@nestjs/typeorm'; //type orm 추가
 // import { VisitorCountModule } from './modules/visitor-count/visitor-count.module'; // visitor모듈 생성한거 추가가
@@ -26,6 +27,7 @@ import { PostModule } from './modules/post/post.module';
       logging: true,      // SQL 로그 콘솔 출력. 분명... 연결은 됐는데?
     }),
     PostModule,
+    WeatherForecastsHModule,
     // VisitorCountModule,
   ],
   controllers: [AppController],

@@ -1,7 +1,0 @@
-
-DB_HOST=183.103.17.20
-DB_PORT=5432
-DB_USERNAME=wonki
-DB_PASSWORD=wonki
-DB_NAME=ocean_story
-SESSION_SECRET=ocean_session

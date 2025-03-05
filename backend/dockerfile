@@ -8,12 +8,14 @@ WORKDIR /backend/nestjs/
 COPY ./nestjs/package*.json ./
 
 COPY ./nestjs/tsconfig*.json ./
-
+  
 # 의존성 설치
 RUN npm install && \
     npm install @nestjs/typeorm typeorm pg && \
-    npm install express-session @types/express-session
-
+    npm install express-session @types/express-session\
+    npm install class-validator class-transformer \
+    npm install typeorm @nestjs/typeorm pg
+    
 # 개발 단계 설정
 FROM base AS development
 

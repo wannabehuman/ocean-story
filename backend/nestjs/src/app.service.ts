@@ -6,6 +6,6 @@ export class AppService {
 
   ){}
   getHello(): string {
-    return 'Hello World!123123';
+    return 'Hello World 뭐여 대체';
   }
 }
