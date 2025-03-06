@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './modules/post/post.module';
 import { WeatherForecastsHModule } from './modules/weather_forecasts_H/weather_forecasts_H.module';
-
+import { CrewsModule } from './modules/crews/crews.module';
 // import { TypeOrmModule } from '@nestjs/typeorm'; //type orm 추가
 // import { VisitorCountModule } from './modules/visitor-count/visitor-count.module'; // visitor모듈 생성한거 추가가
 
@@ -28,6 +28,7 @@ import { WeatherForecastsHModule } from './modules/weather_forecasts_H/weather_f
     }),
     PostModule,
     WeatherForecastsHModule,
+    CrewsModule,
     // VisitorCountModule,
   ],
   controllers: [AppController],
