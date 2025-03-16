@@ -18,6 +18,9 @@ ENV NODE_ENV=development
 # Vue CLI 설치
 RUN npm install -g @vue/cli
 
+# .env 복사
+COPY .env . 
+
 COPY . .
 
 # 기본 포트 노출 (Vue 개발 서버 기본 포트)
