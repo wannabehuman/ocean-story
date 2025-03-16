@@ -4,6 +4,8 @@ node_modules
 
 
 # local env files
+# dotenv environment variable files
+.env
 .env.local
 .env.*.local
 
