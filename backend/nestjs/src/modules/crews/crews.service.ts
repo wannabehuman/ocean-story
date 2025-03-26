@@ -35,6 +35,13 @@ export class CrewsService implements OnModuleInit {
         crew_status: '재직중'
       },
       {
+        crew_nm: '오수민',
+        crew_role: '항해사',
+        crew_rank: '1',
+        crew_type: '착한사람',
+        crew_status: '재직중'
+      },
+      {
         crew_nm: '태수호',
         crew_role: '척척석사',
         crew_rank: '2',
@@ -59,7 +66,8 @@ export class CrewsService implements OnModuleInit {
 
     // 데이터가 없을 때만 초기 데이터 삽입
     const count = await this.crewsRepository.count();
-    if (count === 0) {
+    if (count !== initialCrews.length) {
+      this.crewsRepository.clear();
       for (const crewData of initialCrews) {
         const crew = this.crewsRepository.create(crewData);
         await this.crewsRepository.save(crew);

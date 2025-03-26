@@ -10,6 +10,8 @@
   "dependencies": {
     "axios": "^1.7.9",
     "core-js": "^3.8.3",
+    "gsap": "^3.12.7",
+    "scrollreveal": "^4.0.9",
     "vue": "^3.2.13"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ async function bootstrap() {
 
   app.use(
     session({
+      // secret: process.env.SESSION_SECRET || 'ocean_story_secret_key',
       secret: process.env.SESSION_SECRET,
       resave : false,
       saveUninitialized: false,
