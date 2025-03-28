@@ -5,12 +5,12 @@
         <div class="ocean-title">
           <span class="text-wrapper">
             <span class="letters letters-left">바다</span>
-            <span class="letters ampersand">&</span>
+            <span class="letters ampersand"></span>
             <span class="letters letters-right">이야기</span>
           </span>
-          <div class="line"></div>
+          <!-- <div class="line"></div> -->
         </div>
-        <p class="description">깊은 바다 속 이야기가 시작됩니다</p>
+        <p class="description">당신의 낚시 파트너</p>
       </div>
     </div>
   </div>
@@ -37,42 +37,64 @@ export default {
       // 메인 타임라인
       const tl = gsap.timeline({
         defaults: { 
-          ease: 'power4.out',
-          duration: 1.2
+          ease: 'elastic.out(1, 0.3)',
+          duration: 0.6
         }
       });
+
+      // Jello 효과를 위한 회전 각도 설정
+      const rotations = [
+        { rotation: -4, duration: 0.06 },
+        { rotation: 3, duration: 0.06 },
+        { rotation: -2, duration: 0.06 },
+        { rotation: 1, duration: 0.06 },
+        { rotation: 0, duration: 0.06 }
+      ];
 
       // 애니메이션 시퀀스
       tl.to('.letters-left', {
         opacity: 1,
         x: 0,
-        duration: 1.2,
+        duration: 0.8,
         ease: "elastic.out(1, 0.3)"
       })
+      .to('.letters-left', rotations)
       .to('.ampersand', {
         opacity: 1,
         scale: 1,
-        duration: 0.8,
+        duration: 0.5,
         ease: "back.out(1.7)"
-      }, '-=0.8')
+      }, '-=0.4')
       .to('.letters-right', {
         opacity: 1,
         x: 0,
-        duration: 1.2,
+        duration: 0.8,
         ease: "elastic.out(1, 0.3)"
-      }, '-=0.8')
+      }, '-=0.4')
+      .to('.letters-right', rotations, '-=0.3')
       .to('.line', {
         opacity: 1,
         scaleX: 1,
-        duration: 1,
+        duration: 0.6,
         ease: "power2.out"
-      }, '-=1')
+      }, '-=0.5')
       .to('.description', {
         opacity: 1,
         y: 0,
-        duration: 1,
+        duration: 0.6,
         ease: "power3.out"
-      }, '-=0.5');
+      }, '-=0.3');
+
+      // 호버 효과 추가
+      const letters = document.querySelectorAll('.letters');
+      letters.forEach(letter => {
+        letter.addEventListener('mouseenter', () => {
+          gsap.to(letter, {
+            keyframes: rotations,
+            duration: 0.3
+          });
+        });
+      });
     }
   }
 };
