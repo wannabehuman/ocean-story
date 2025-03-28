@@ -2,8 +2,16 @@
   <div class="crew-container">
     <div class="title-section">
       <div class="title-wrapper">
-        <h1 class="main-title-top">우리의 크루를</h1>
-        <h1 class="main-title-bottom">소개합니다</h1>
+        <div class="ocean-title">
+          <span class="text-wrapper">
+            <span class="letters letters-left">바다</span>
+            <span class="letters letters-right">이야기</span>
+          </span>
+          <div class="line"></div>
+        </div>
+        <div class="subtitle-wrapper">
+          <h2 class="subtitle">우리의 크루를 소개합니다</h2>
+        </div>
       </div>
       <div class="scroll-guide">
         <span>스크롤을 내려서 더 보기</span>
@@ -49,32 +57,57 @@ export default {
   },
   methods: {
     initTitleAnimation() {
-      // 타이틀 애니메이션
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      
-      tl.from('.main-title-top', {
-        y: 100,
+      // 라인 애니메이션
+      gsap.from('.line', {
+        scaleX: 0,
+        duration: 1,
+        ease: "power4.out"
+      });
+
+      // 왼쪽 텍스트 애니메이션
+      gsap.from('.letters-left', {
+        x: -100,
         opacity: 0,
-        duration: 1
-      })
-      .from('.main-title-bottom', {
-        y: 100,
+        duration: 1.2,
+        delay: 0.5,
+        ease: "power4.out"
+      });
+
+      // 오른쪽 텍스트 애니메이션
+      gsap.from('.letters-right', {
+        x: 100,
         opacity: 0,
-        duration: 1
-      }, "-=0.5")
-      .from('.scroll-guide', {
+        duration: 1.2,
+        delay: 0.5,
+        ease: "power4.out"
+      });
+
+      // 서브타이틀 애니메이션
+      gsap.from('.subtitle', {
         y: 50,
         opacity: 0,
-        duration: 1
-      }, "-=0.5");
+        duration: 1,
+        delay: 1.3,
+        ease: "power3.out"
+      });
 
-      // 스크롤 가이드 무한 애니메이션
+      // 스크롤 가이드 애니메이션
+      gsap.from('.scroll-guide', {
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        delay: 1.8,
+        ease: "power2.out"
+      });
+
+      // 스크롤 가이드 아이콘 무한 애니메이션
       gsap.to('.scroll-guide i', {
         y: 10,
         duration: 1,
         repeat: -1,
         yoyo: true,
-        ease: "power1.inOut"
+        ease: "power1.inOut",
+        delay: 2
       });
     },
     initCardAnimations() {
@@ -150,18 +183,54 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
 }
 
-.main-title-top,
-.main-title-bottom {
-  font-size: 4.5rem;
-  font-weight: 700;
-  color: #000000;
+.ocean-title {
+  position: relative;
   text-align: center;
+}
+
+.text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.1em;
+  padding-right: 0.05em;
+  padding-bottom: 0.15em;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+  transform-origin: left;
+}
+
+.letters {
+  display: inline-block;
+  font-size: 6rem;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.05em;
+}
+
+.letters-left {
+  margin-right: 0.5rem;
+}
+
+.subtitle-wrapper {
+  overflow: hidden;
+}
+
+.subtitle {
+  font-size: 2rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
   margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  text-align: center;
 }
 
 .scroll-guide {
@@ -255,10 +324,12 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .main-title-top,
-  .main-title-bottom {
-    font-size: 2.8rem;
-    padding: 0 1rem;
+  .letters {
+    font-size: 4rem;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
   }
   
   .card-content {
