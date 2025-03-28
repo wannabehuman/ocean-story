@@ -37,19 +37,32 @@ export default {
       // 메인 타임라인
       const tl = gsap.timeline({
         defaults: { 
-          ease: 'elastic.out(1, 0.3)',
+          ease: 'elastic.out(0.5, 0.3)',
           duration: 0.6
         }
       });
 
       // Jello 효과를 위한 회전 각도 설정
       const rotations = [
-        { rotation: -4, duration: 0.06 },
-        { rotation: 3, duration: 0.06 },
-        { rotation: -2, duration: 0.06 },
-        { rotation: 1, duration: 0.06 },
-        { rotation: 0, duration: 0.06 }
+        { rotation: -32, duration: 0.12 },
+        { rotation: 24, duration: 0.12 },
+        { rotation: -16, duration: 0.12 },
+        { rotation: 8, duration: 0.12 },
+        { rotation: 0, duration: 0.12 }
       ];
+
+      // 파도 효과를 위한 설정
+      const waveEffect = {
+        keyframes: [
+          { y: 0, rotation: 0 },
+          { y: -24, rotation: 2, ease: "sine.inOut" },
+          { y: 0, rotation: 0, ease: "sine.inOut" },
+          { y: 5, rotation: -1, ease: "sine.inOut" },
+          { y: 0, rotation: 0, ease: "sine.inOut" }
+        ],
+        duration: 1.2,
+        ease: "none"
+      };
 
       // 애니메이션 시퀀스
       tl.to('.letters-left', {
@@ -84,15 +97,14 @@ export default {
         duration: 0.6,
         ease: "power3.out"
       }, '-=0.3');
-
-      // 호버 효과 추가
       const letters = document.querySelectorAll('.letters');
       letters.forEach(letter => {
+        gsap.to(letter, waveEffect);
+      });
+      // 호버 효과 추가
+      letters.forEach(letter => {
         letter.addEventListener('mouseenter', () => {
-          gsap.to(letter, {
-            keyframes: rotations,
-            duration: 0.3
-          });
+          gsap.to(letter, waveEffect);
         });
       });
     }

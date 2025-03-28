@@ -82,11 +82,11 @@ export default {
       // 스크롤 가이드 무한 애니메이션
       gsap.to('.scroll-guide i', {
         y: 10,
-        duration: 1.5,
+        duration: 0.5,
         repeat: -1,
         yoyo: true,
         ease: "power1.inOut",
-        delay: 2
+        delay: 0
       });
     },
     initCardAnimations() {
@@ -120,7 +120,7 @@ export default {
           onEnter: () => {
             const tl = gsap.timeline({
               defaults: {
-                duration: 0.65,
+                duration: 0.1,
                 ease: "power2.out"
               }
             });
