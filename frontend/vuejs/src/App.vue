@@ -5,9 +5,7 @@
   <Ranking />
   <CrewInfo />
 
-  <div id="app">
-    <!-- <ExampleComponent /> -->
-  </div>
+
 </template>
 
 <script>
