@@ -1,11 +1,11 @@
 <template>
   <!-- <OceanTitle /> -->
   <OceanTitle />
+  <FishingCalendar />
   <Ranking />
   <CrewInfo />
 
   <div id="app">
-    <FishingCalendar />
     <!-- <ExampleComponent /> -->
   </div>
 </template>
