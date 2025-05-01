@@ -21,4 +21,10 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+  // @Get()
+  // getTide():string{
+  //   return this.appService.getTide();
+  // }
+
+
 }
