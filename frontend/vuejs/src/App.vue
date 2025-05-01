@@ -1,20 +1,21 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <ExampleComponent msg="Welcome to Your Vue.js App"/>
-
+  <div id="app">
+    <FishingCalendar />
+    <!-- <ExampleComponent /> -->
+  </div>
 </template>
 
 <script>
-import ExampleComponent from './components/ExampleComponent.vue';
-
-
-
-export default {
+import { defineComponent } from 'vue'
+import FishingCalendar from './components/FishingCalendar.vue'
+// import ExampleComponent from './components/ExampleComponent.vue'
+export default defineComponent({
   name: 'App',
   components: {
-    ExampleComponent
+    FishingCalendar
+    // ExampleComponent
   }
-}
+})
 </script>
 
 <style>
@@ -25,5 +26,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+/* 전역 스타일 */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
 }
 </style>

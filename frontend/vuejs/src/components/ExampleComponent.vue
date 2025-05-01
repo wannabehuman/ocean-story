@@ -14,7 +14,7 @@
     data() {
       return {
         message: '',
-        윤정서체크체크:'윤정서 체크체크',
+        윤정서체크체크:'윤정서 체크체크!!!!!!!!',
         dbTest : '',
         getHello:''
       };
@@ -34,13 +34,13 @@
         .catch(error => {
           console.error('There was an error!', error);
         });
-      axios.get('http://localhost/api/visit')
-        .then(response => {
-          this.dbTest = response.data;  // 응답 데이터 설정
-        })
-        .catch(error => {
-          console.error('There was an error!', error);
-        });
+      // axios.get('http://localhost/api/crews')
+      //   .then(response => {
+      //     this.dbTest = response.data;  // 응답 데이터 설정
+      //   })
+      //   .catch(error => {
+      //     console.error('There was an error!', error);
+      //   });
       },
   };
   </script>
