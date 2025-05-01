@@ -1,30 +1,32 @@
 <template>
-  <div class="calendar-container">
-    <div class="fc-toolbar">
-      <div>
-        <!-- <button class="fc-button fc-button-primary" @click="today">오늘</button> -->
-        <select v-model="selectedLocation" @change="handleLocationChange" class="location-select">
-          <option v-for="location in locations" 
-          :key="location.value" 
-          :value="location.value">
-          {{ location.label }}
-          </option>
-        </select>
+  <div class="background-color">
+    <div class="calendar-container">
+      <div class="fc-toolbar">
+        <div>
+          <!-- <button class="fc-button fc-button-primary" @click="today">오늘</button> -->
+          <select v-model="selectedLocation" @change="handleLocationChange" class="location-select">
+            <option v-for="location in locations" 
+            :key="location.value" 
+            :value="location.value">
+            {{ location.label }}
+            </option>
+          </select>
+        </div>
+        <div class="fc-center">
+          <button class="fc-button fc-button-primary" @click="prevMonth">◄</button>
+          <h2 class="fc-toolbar-title">{{ currentTitle }}</h2>
+          <button class="fc-button fc-button-primary" @click="nextMonth">►</button>
+        </div>
+        <!-- <div class="fc-right">
+          <button class="fc-button fc-button-primary" @click="changeView('dayGridMonth')">월</button>
+          <button class="fc-button fc-button-primary" @click="changeView('dayGridWeek')">주</button>
+        </div> -->
       </div>
-      <div class="fc-center">
-        <button class="fc-button fc-button-primary" @click="prevMonth">◄</button>
-        <h2 class="fc-toolbar-title">{{ currentTitle }}</h2>
-        <button class="fc-button fc-button-primary" @click="nextMonth">►</button>
-      </div>
-      <!-- <div class="fc-right">
-        <button class="fc-button fc-button-primary" @click="changeView('dayGridMonth')">월</button>
-        <button class="fc-button fc-button-primary" @click="changeView('dayGridWeek')">주</button>
-      </div> -->
+      <FullCalendar 
+        ref="calendar"
+        :options="calendarOptions"
+      />
     </div>
-    <FullCalendar 
-      ref="calendar"
-      :options="calendarOptions"
-    />
   </div>
 </template>
 
@@ -282,6 +284,7 @@ export default defineComponent({
       }, 1000);
     },
     handleLocationChange() {
+      this.updateTitle();
       console.log('Selected location:', this.selectedLocation);
     },
     prevMonth() {
@@ -669,5 +672,8 @@ export default defineComponent({
     font-family: 'HakgyoansimDunggeunmisoTTF-B', sans-serif !important;
     font-size: 1.5em !important;
     margin: 0 20px !important;
+}
+.background-color {
+  background-color: #0bbff5
 }
 </style>
