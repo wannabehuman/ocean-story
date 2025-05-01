@@ -1,12 +1,18 @@
 <template>
   <div class="ocean-container">
+    <div class="background-image"></div>
+    <div class="wave-container">
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+      <div class="wave wave3"></div>
+    </div>
     <div class="title-section">
       <div class="title-content">
         <div class="ocean-title">
           <span class="text-wrapper">
-            <span class="letters letters-left">바다</span>
+            <span class="letters letters-left">OCEAN</span>
             <span class="letters ampersand"></span>
-            <span class="letters letters-right">이야기</span>
+            <span class="letters letters-right">STORY</span>
           </span>
           <!-- <div class="line"></div> -->
         </div>
@@ -119,20 +125,93 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  background: linear-gradient(135deg, rgba(205, 236, 250, 0.7) 0%, rgba(225, 245, 254, 0.7) 100%);
   overflow: hidden;
+  position: relative;
+}
+
+.background-image {
+  position: absolute;
+  top: 230px;
+  left: 20px;
+  width: 45%;
+  height: 45%;
+  background-image: url('@/../public/images/낚시_일러스트.png');
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.wave-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+}
+
+.wave1 {
+  z-index: 3;
+  /* opacity: 0.7; */
+  height: 60%;  
+  background: #0cbff5;
+
+}
+
+.wave2 {
+  z-index: 2;
+  /* opacity: 0.5; */
+  height: 80%;
+  background: #6ddcf8;
+
+}
+
+.wave3 {
+  z-index: 1;
+  /* opacity: 0.3; */
+  height: 100%;
+  background: #a9f6fd;
+
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-25%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .title-section {
   text-align: center;
-  padding: 2rem;
+  padding: 1rem;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 .title-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .ocean-title {
@@ -144,13 +223,14 @@ export default {
   position: relative;
   display: inline-block;
   padding: 0.5em 0;
+  white-space: nowrap;
 }
 
 .letters {
   display: inline-block;
-  font-size: 7rem;
-  font-weight: 900;
-  color: #000;
+  font-size: 5.5rem;
+  font-weight: bold;
+  color: #0455BF;
   opacity: 0;
 }
 
@@ -167,7 +247,7 @@ export default {
   font-family: serif;
   font-style: italic;
   transform: scale(0.5);
-  color: #666;
+  color: #0455BF;
 }
 
 .line {
@@ -181,7 +261,7 @@ export default {
 }
 
 .description {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #666;
   margin: 0;
   transform: translateY(30px);
@@ -192,7 +272,7 @@ export default {
 
 @media (max-width: 768px) {
   .letters {
-    font-size: 4rem;
+    font-size: 3.5rem;
   }
 
   .ampersand {
@@ -202,15 +282,23 @@ export default {
   .description {
     font-size: 1.2rem;
   }
+
+  .title-section {
+    padding: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {
   .letters {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 
   .description {
     font-size: 1rem;
+  }
+
+  .title-section {
+    padding: 0.5rem;
   }
 }
 </style> 

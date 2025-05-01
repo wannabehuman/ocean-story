@@ -1,31 +1,30 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png">/ -->
-  <!-- <ExampleComponent msg="Welcome to Your Vue.js App"/> -->
-
+  <!-- <OceanTitle /> -->
   <OceanTitle />
+  <Ranking />
   <CrewInfo />
 
 </template>
 
 <script>
-// import ExampleComponent from './components/ExampleComponent.vue';
 import CrewInfo from './components/CrewInfo.vue';
 import OceanTitle from './components/OceanTitle.vue';
-
+import Ranking from './components/Ranking.vue';
 
 export default {
   name: 'App',
   components: {
-    // ExampleComponent,
+    // OceanTitle,
     OceanTitle,
-    CrewInfo
+    CrewInfo,
+    Ranking
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'HakgyoansimDunggeunmisoTTF-B';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

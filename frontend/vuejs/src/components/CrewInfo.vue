@@ -96,6 +96,7 @@ export default {
         const image = `${card} .image-section`;
         const textContent = `${card} .text-content`;
 
+        // 초기 상태 설정은 유지하되 스크롤 성능 최적화
         gsap.set([content, image, textContent], { 
           opacity: 0
         });
@@ -113,53 +114,31 @@ export default {
           y: 15
         });
 
+        // ScrollTrigger 설정 최적화
         ScrollTrigger.create({
           trigger: card,
-          start: "top center+=100",
-          end: "bottom center",
+          start: "top bottom",
+          once: true, // 한 번만 실행되도록 설정
           onEnter: () => {
-            const tl = gsap.timeline({
-              defaults: {
-                duration: 0.1,
-                ease: "power2.out"
-              }
-            });
-
-            tl.to(content, {
+            gsap.to(content, {
               opacity: 1,
               x: 0,
               y: 0,
-            })
-            .to(image, {
+              duration: 0.3,
+              ease: "power1.out"
+            });
+            gsap.to(image, {
               opacity: 1,
               scale: 1,
-            }, "-=0.45")
-            .to(textContent, {
+              duration: 0.3,
+              ease: "power1.out"
+            });
+            gsap.to(textContent, {
               opacity: 1,
               y: 0,
-            }, "-=0.45");
-          },
-          onLeaveBack: () => {
-            const tl = gsap.timeline({
-              defaults: {
-                duration: 0.5,
-                ease: "power2.in"
-              }
+              duration: 0.3,
+              ease: "power1.out"
             });
-
-            tl.to(textContent, {
-              opacity: 0,
-              y: 15,
-            })
-            .to(image, {
-              opacity: 0,
-              scale: 1.05,
-            }, "-=0.35")
-            .to(content, {
-              opacity: 0,
-              x: index % 2 === 0 ? -30 : 30,
-              y: 20,
-            }, "-=0.35");
           }
         });
       });
@@ -193,7 +172,7 @@ export default {
 .crew-container {
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
+  background: linear-gradient(135deg, rgba(205, 236, 250, 0.7) 0%, rgba(225, 245, 254, 0.7) 100%);
   overflow-x: hidden;
 }
 
@@ -204,7 +183,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background: transparent;
   overflow: hidden;
   perspective: 1000px;
 }
@@ -215,7 +194,7 @@ export default {
   height: 40%;
   bottom: 0;
   left: 0;
-  background: linear-gradient(to bottom, rgba(26, 35, 126, 0.02), rgba(26, 35, 126, 0.05));
+  background: linear-gradient(to bottom, rgba(4, 85, 191, 0.02), rgba(4, 85, 191, 0.05));
   overflow: hidden;
 }
 
@@ -225,14 +204,14 @@ export default {
   height: 100%;
   bottom: -5%;
   left: 0;
-  background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%231a237e" fill-opacity="0.04" d="M0,160L34.3,165.3C68.6,171,137,181,206,165.3C274.3,149,343,107,411,101.3C480,96,549,128,617,154.7C685.7,181,754,203,823,186.7C891.4,171,960,117,1029,112C1097.1,107,1166,149,1234,160C1302.9,171,1371,149,1406,138.7L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>') repeat-x;
+  background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%230cbff5" fill-opacity="0.04" d="M0,160L34.3,165.3C68.6,171,137,181,206,165.3C274.3,149,343,107,411,101.3C480,96,549,128,617,154.7C685.7,181,754,203,823,186.7C891.4,171,960,117,1029,112C1097.1,107,1166,149,1234,160C1302.9,171,1371,149,1406,138.7L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>') repeat-x;
   animation: wave 25s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
   transform: translate3d(0, 0, 0);
 }
 
 .wave:nth-of-type(2) {
   bottom: -10%;
-  background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%231a237e" fill-opacity="0.06" d="M0,192L34.3,181.3C68.6,171,137,149,206,160C274.3,171,343,213,411,213.3C480,213,549,171,617,144C685.7,117,754,107,823,128C891.4,149,960,203,1029,208C1097.1,213,1166,171,1234,160C1302.9,149,1371,171,1406,181.3L1440,192L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>') repeat-x;
+  background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%236ddcf8" fill-opacity="0.06" d="M0,192L34.3,181.3C68.6,171,137,149,206,160C274.3,171,343,213,411,213.3C480,213,549,171,617,144C685.7,117,754,107,823,128C891.4,149,960,203,1029,208C1097.1,213,1166,171,1234,160C1302.9,149,1371,171,1406,181.3L1440,192L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>') repeat-x;
   animation: wave 20s cubic-bezier(0.36, 0.45, 0.63, 0.53) -.125s infinite;
   opacity: 1;
 }
@@ -260,7 +239,7 @@ export default {
 .main-title-bottom {
   font-size: 4.5rem;
   font-weight: 700;
-  color: #000000;
+  color: #0455BF;
   text-align: center;
 }
 
@@ -313,7 +292,7 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: #1a237e;
+  color: #0455BF;
   font-size: 0.9rem;
   opacity: 0.7;
 }
@@ -322,17 +301,17 @@ export default {
   padding: 4rem 0;
   display: flex;
   flex-direction: column;
-  gap: 15vh;
+  gap: 8vh;
   max-width: 1400px;
   margin: 0 auto;
-  background: #ffffff;
+  background: transparent;
 }
 
 .crew-card {
   position: relative;
   overflow: visible;
-  height: 70vh;
-  min-height: 600px;
+  height: 60vh;
+  min-height: 500px;
   width: 100%;
   padding: 0 2rem;
 }
@@ -352,7 +331,7 @@ export default {
   background: #ffffff;
   border: none;
   border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(26, 35, 126, 0.08);
+  box-shadow: 0 10px 40px rgba(4, 85, 191, 0.08);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   height: 100%;
   display: grid;
@@ -381,8 +360,8 @@ export default {
   height: 100%;
   background: linear-gradient(
     to right,
-    rgba(26, 35, 126, 0.1),
-    rgba(26, 35, 126, 0.05)
+    rgba(4, 85, 191, 0.1),
+    rgba(4, 85, 191, 0.05)
   );
 }
 
@@ -402,7 +381,7 @@ export default {
 
 .crew-card:hover .card-content {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 60px rgba(26, 35, 126, 0.15);
+  box-shadow: 0 20px 60px rgba(4, 85, 191, 0.15);
 }
 
 .crew-card:hover .image-section {
@@ -414,22 +393,22 @@ export default {
   top: 2.5rem;
   right: 2.5rem;
   font-size: 1.8rem;
-  color: #1a237e;
+  color: #0455BF;
   font-weight: 800;
   opacity: 0.3;
 }
 
 .crew-name {
   font-size: 4.5rem;
-  color: #1a237e;
+  color: #0455BF;
   margin: 0 0 1.5rem 0;
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+  background: linear-gradient(135deg, #0455BF 0%, #0cbff5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 30px rgba(26, 35, 126, 0.1);
+  text-shadow: 0 2px 30px rgba(4, 85, 191, 0.1);
   text-align: left;
 }
 
@@ -443,11 +422,11 @@ export default {
 .crew-role,
 .crew-type {
   font-size: 1rem;
-  color: #1a237e;
+  color: #0455BF;
   margin: 0;
   font-weight: 600;
   opacity: 0.8;
-  background: rgba(26, 35, 126, 0.08);
+  background: rgba(4, 85, 191, 0.08);
   padding: 0.5rem 1rem;
   border-radius: 50px;
 }
@@ -462,7 +441,7 @@ export default {
 .crew-description {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #1a237e;
+  color: #666;
   opacity: 0.7;
   margin: 0;
   max-width: 90%;
