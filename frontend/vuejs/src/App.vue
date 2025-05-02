@@ -1,15 +1,19 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <!-- <ExampleComponent msg="Welcome to Your Vue.js App"/> -->
-  <WeatherCompnent/>
-  
+  <div id="temp_wrap">
+    <WeatherComponent/>
+    <NickNameComponent/>
+
+  </div>
 
 
 </template>
 
 <script>
 // import ExampleComponent from './components/ExampleComponent.vue'; // 초기화면
-import WeatherCompnent from './components/weatherSec.vue'; // 날씨 section 
+import WeatherComponent  from './components/weatherSec.vue';  // 날씨 section 
+import NickNameComponent from './components/NicknameReg.vue'; // 닉네임 입력
 
 
 
@@ -17,7 +21,8 @@ export default {
   name: 'App',
   components: {
     // ExampleComponent, // 초기화면
-    WeatherCompnent, // 날씨 section
+    WeatherComponent, // 날씨 section
+    NickNameComponent, // 닉네임 입력 
   }
 }
 </script>
@@ -31,6 +36,14 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 } */
+
+#temp_wrap {
+  width: 100%;
+  height: 100%;
+  border: 1px solid;
+  overflow: auto;
+}
+
 
 @font-face {
     /* font-family: 'HakgyoansimDunggeunmisoTTF-B'; */

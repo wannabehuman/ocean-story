@@ -146,7 +146,6 @@ export default {
         .then(res => res.json())
         .then(data => {
           // data return
-          console.log(data)
           this.curnt_wthr = data.current;            // 
           this.curnt_wthr_unit = data.current_units; //
           this.wthr_code = data.current.weather_code;
