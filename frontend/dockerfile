@@ -8,6 +8,8 @@ WORKDIR /frontend/vuejs/
 COPY ./vuejs/package*.json ./
 
 RUN npm install
+# FullCalendar 패키지 설치
+RUN npm install --save @fullcalendar/vue3 @fullcalendar/daygrid
 
 # 개발 단계 설정
 FROM base AS development
