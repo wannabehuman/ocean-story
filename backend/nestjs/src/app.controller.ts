@@ -21,6 +21,7 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+<<<<<<< HEAD
 
   @Get('yun')
   getJung() {
@@ -33,6 +34,12 @@ export class AppController {
   }
   
 
+=======
+  // @Get()
+  // getTide():string{
+  //   return this.appService.getTide();
+  // }
+>>>>>>> yun
 
 
 }
