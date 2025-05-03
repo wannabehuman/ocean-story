@@ -8,7 +8,12 @@ async function bootstrap() {
 
   app.use(
     session({
+<<<<<<< HEAD
       secret: "DSDS",
+=======
+      // secret: process.env.SESSION_SECRET || 'ocean_story_secret_key',
+      secret: process.env.SESSION_SECRET,
+>>>>>>> 0861d22 (스크롤 라이브러리, GSAP 라이브러리 테스트 및 멤버소개 구성 화면 작업 중)
       resave : false,
       saveUninitialized: false,
       cookie:{

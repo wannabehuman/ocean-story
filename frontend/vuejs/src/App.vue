@@ -1,28 +1,32 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+  <!-- <img alt="Vue logo" src="./assets/logo.png">/ -->
   <!-- <ExampleComponent msg="Welcome to Your Vue.js App"/> -->
   <div id="temp_wrap">
+    <CrewInfo />
     <WeatherComponent/>
     <NickNameComponent/>
 
   </div>
-
-
 </template>
 
 <script>
 // import ExampleComponent from './components/ExampleComponent.vue'; // 초기화면
 import WeatherComponent  from './components/weatherSec.vue';  // 날씨 section 
 import NickNameComponent from './components/NicknameReg.vue'; // 닉네임 입력
+import CrewInfo from './components/CrewInfo.vue';
 
+// import ExampleComponent from './components/ExampleComponent.vue';
 
 
 export default {
   name: 'App',
   components: {
     // ExampleComponent, // 초기화면
+
     WeatherComponent, // 날씨 section
     NickNameComponent, // 닉네임 입력 
+    // ExampleComponent,
+    CrewInfo
   }
 }
 </script>
@@ -106,4 +110,5 @@ table {
   height: 100%;
 }
 
+  /* margin-top: 60px; */
 </style>
