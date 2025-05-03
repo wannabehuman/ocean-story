@@ -21,25 +21,10 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-<<<<<<< HEAD
-
-  @Get('yun')
-  getJung() {
-    return { yunTest: '이건 됐다. 너 잘 해. 너 칭찬해.'}
-  }
-
-  @Get('yjs')
-  getYjs(): string {
-    return this.appService.getYun();
-  }
-  
-
-=======
   // @Get()
   // getTide():string{
   //   return this.appService.getTide();
   // }
->>>>>>> yun
 
 
 }

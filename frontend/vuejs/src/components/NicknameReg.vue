@@ -13,7 +13,7 @@
       <!-- INPUT -->
       <div class="ipt-n-name">
 
-        <input type="text">
+        <input type="text" v-model="nickname">
 
       </div>
       <!-- INPUT // -->
@@ -28,7 +28,7 @@
 
 
       <!-- BUTTON -->
-      <button type="button" class="n-name-btn">등록하기</button>
+      <button type="button" class="n-name-btn" @click="registerNickname">등록하기</button>
 
 
     </div>
@@ -43,7 +43,35 @@ import '@/assets/css/NicknameReg.css';
 export default {
   name: 'NickNameReg',
   data() {
-    return {}
+    return {
+      nickname: ''
+    }
+  },
+  methods: {
+    async registerNickname() {
+      if (!this.nickname) {
+        alert('닉네임을 입력해주세요!');
+        return;
+      }
+      try {
+        const response = await fetch('http://localhost/api/ranking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ user_nm: this.nickname })
+        });
+
+        if (!response.ok) {
+          throw new Error('서버 오류');
+        }
+
+        alert('닉네임이 등록되었습니다!');
+        this.nickname = '';
+      } catch (e) {
+        alert('등록 중 오류가 발생했습니다.');
+      }
+    }
   },
 }
 </script>

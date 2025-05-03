@@ -6,13 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './modules/post/post.module';
 import { WeatherForecastsHModule } from './modules/weather_forecasts_H/weather_forecasts_H.module';
 import { CrewsModule } from './modules/crews/crews.module';
-<<<<<<< HEAD
 import { YunModule  } from './modules/yun/yun.module';
-=======
+
 import { RankingModule} from './modules/ranking/ranking.module';
 import { SeaTideModule } from './modules/sea_tide/sea_tide.module';
 import { SeaTide } from './modules/sea_tide/sea_tide.entity';
->>>>>>> yun
 // import { TypeOrmModule } from '@nestjs/typeorm'; //type orm 추가
 // import { VisitorCountModule } from './modules/visitor-count/visitor-count.module'; // visitor모듈 생성한거 추가가
 
@@ -37,12 +35,9 @@ import { SeaTide } from './modules/sea_tide/sea_tide.entity';
     PostModule,
     WeatherForecastsHModule,
     CrewsModule,
-<<<<<<< HEAD
     YunModule,
-=======
     RankingModule,
     SeaTideModule,
->>>>>>> yun
     // VisitorCountModule,
   ],
   controllers: [AppController],

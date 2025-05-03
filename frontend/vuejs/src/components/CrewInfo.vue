@@ -1,6 +1,10 @@
 <template>
   <div class="crew-container">
     <div class="title-section">
+      <div class="ocean">
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
       <div class="title-wrapper">
         <h1 class="main-title-top">우리의 크루를</h1>
         <h1 class="main-title-bottom">소개합니다</h1>
@@ -15,14 +19,21 @@
       <div v-for="(crew, index) in crews" 
            :key="crew.crew_id" 
            class="crew-card"
-           :class="'crew-card-' + index">
+           :class="['crew-card-' + index, index % 2 === 0 ? 'card-left' : 'card-right']">
         <div class="card-content">
-          <div class="card-background"></div>
-          <span class="crew-number">{{ String(index + 1).padStart(2, '0') }}</span>
-          <h2 class="crew-name">{{ crew.crew_nm }}</h2>
-          <div class="crew-info">
-            <p class="crew-role">{{ crew.crew_role }}</p>
-            <p class="crew-type">{{ crew.crew_type }}</p>
+          <div class="image-section" :style="{ backgroundImage: `url(${crew.image_url})` }">
+            <div class="image-overlay"></div>
+          </div>
+          <div class="text-section">
+            <div class="text-content">
+              <span class="crew-number">{{ String(index + 1).padStart(2, '0') }}</span>
+              <h2 class="crew-name">{{ crew.crew_nm }}</h2>
+              <div class="crew-info">
+                <p class="crew-role">{{ crew.crew_role }}</p>
+                <p class="crew-type">{{ crew.crew_type }}</p>
+              </div>
+              <p class="crew-description">{{ crew.description }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -71,47 +82,76 @@ export default {
       // 스크롤 가이드 무한 애니메이션
       gsap.to('.scroll-guide i', {
         y: 10,
-        duration: 1,
+        duration: 0.5,
         repeat: -1,
         yoyo: true,
-        ease: "power1.inOut"
+        ease: "power1.inOut",
+        delay: 0
       });
     },
     initCardAnimations() {
-      // 각 카드의 애니메이션
       this.crews.forEach((_, index) => {
-        gsap.from('.crew-card-' + index + ' .card-content', {
-          scrollTrigger: {
-            trigger: '.crew-card-' + index,
-            start: "top center+=100",
-            end: "bottom center",
-            toggleActions: "play none none reverse"
-          },
-          y: 100,
-          opacity: 0,
-          scale: 0.9,
-          duration: 1,
-          ease: "power3.out"
+        const card = '.crew-card-' + index;
+        const content = `${card} .card-content`;
+        const image = `${card} .image-section`;
+        const textContent = `${card} .text-content`;
+
+        // 초기 상태 설정은 유지하되 스크롤 성능 최적화
+        gsap.set([content, image, textContent], { 
+          opacity: 0
         });
 
-        // 배경 효과 애니메이션
-        gsap.from('.crew-card-' + index + ' .card-background', {
-          scrollTrigger: {
-            trigger: '.crew-card-' + index,
-            start: "top center+=100",
-            end: "bottom center",
-            toggleActions: "play none none reverse"
-          },
-          scaleY: 0,
-          duration: 0.8,
-          ease: "power2.inOut"
+        gsap.set(content, {
+          x: index % 2 === 0 ? -30 : 30,
+          y: 20
+        });
+
+        gsap.set(image, {
+          scale: 1.05
+        });
+
+        gsap.set(textContent, {
+          y: 15
+        });
+
+        // ScrollTrigger 설정 최적화
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top bottom",
+          once: true, // 한 번만 실행되도록 설정
+          onEnter: () => {
+            gsap.to(content, {
+              opacity: 1,
+              x: 0,
+              y: 0,
+              duration: 0.3,
+              ease: "power1.out"
+            });
+            gsap.to(image, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.3,
+              ease: "power1.out"
+            });
+            gsap.to(textContent, {
+              opacity: 1,
+              y: 0,
+              duration: 0.3,
+              ease: "power1.out"
+            });
+          }
         });
       });
     },
     fetchCrewData() {
       axios.get('http://localhost/api/crews')
         .then(response => {
-          this.crews = response.data;
+          // 이미지 URL과 설명 필드가 없는 경우를 위한 기본값 처리
+          this.crews = response.data.map(crew => ({
+            ...crew,
+            image_url: crew.image_url || '/default-profile.jpg',
+            description: crew.description || '선원에 대한 자세한 소개가 곧 업데이트될 예정입니다.'
+          }));
           this.$nextTick(() => {
             this.initCardAnimations();
           });
@@ -132,7 +172,7 @@ export default {
 .crew-container {
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
+  background: linear-gradient(135deg, rgba(205, 236, 250, 0.7) 0%, rgba(225, 245, 254, 0.7) 100%);
   overflow-x: hidden;
 }
 
@@ -143,7 +183,49 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  background: transparent;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.ocean {
+  position: absolute;
+  width: 100%;
+  height: 40%;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(4, 85, 191, 0.02), rgba(4, 85, 191, 0.05));
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  bottom: -5%;
+  left: 0;
+  background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%230cbff5" fill-opacity="0.04" d="M0,160L34.3,165.3C68.6,171,137,181,206,165.3C274.3,149,343,107,411,101.3C480,96,549,128,617,154.7C685.7,181,754,203,823,186.7C891.4,171,960,117,1029,112C1097.1,107,1166,149,1234,160C1302.9,171,1371,149,1406,138.7L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>') repeat-x;
+  animation: wave 25s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+.wave:nth-of-type(2) {
+  bottom: -10%;
+  background: url('data:image/svg+xml,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%236ddcf8" fill-opacity="0.06" d="M0,192L34.3,181.3C68.6,171,137,149,206,160C274.3,171,343,213,411,213.3C480,213,549,171,617,144C685.7,117,754,107,823,128C891.4,149,960,203,1029,208C1097.1,213,1166,171,1234,160C1302.9,149,1371,171,1406,181.3L1440,192L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>') repeat-x;
+  animation: wave 20s cubic-bezier(0.36, 0.45, 0.63, 0.53) -.125s infinite;
+  opacity: 1;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(0.95);
+  }
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
 }
 
 .title-wrapper {
@@ -157,11 +239,50 @@ export default {
 .main-title-bottom {
   font-size: 4.5rem;
   font-weight: 700;
-  color: #000000;
+  color: #0455BF;
   text-align: center;
+}
+
+.text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.1em;
+  padding-right: 0.05em;
+  padding-bottom: 0.15em;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+  transform-origin: left;
+}
+
+.letters {
+  display: inline-block;
+  font-size: 6rem;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.05em;
+}
+
+.letters-left {
+  margin-right: 0.5rem;
+}
+
+.subtitle-wrapper {
+  overflow: hidden;
+}
+
+.subtitle {
+  font-size: 2rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
   margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  text-align: center;
 }
 
 .scroll-guide {
@@ -171,87 +292,198 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: #0455BF;
   font-size: 0.9rem;
+  opacity: 0.7;
 }
 
 .crews-section {
-  padding: 6rem 2rem;
+  padding: 4rem 0;
   display: flex;
   flex-direction: column;
-  gap: 8rem;
-  max-width: 1200px;
+  gap: 8vh;
+  max-width: 1400px;
   margin: 0 auto;
+  background: transparent;
 }
 
 .crew-card {
   position: relative;
-  border-radius: 15px;
-  overflow: hidden;
+  overflow: visible;
+  height: 60vh;
+  min-height: 500px;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.card-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.card-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .card-content {
   position: relative;
-  padding: 3rem 4rem;
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: none;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s ease;
-  z-index: 1;
+  box-shadow: 0 10px 40px rgba(4, 85, 191, 0.08);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  display: grid;
+  grid-template-columns: 45% 55%;
+  overflow: hidden;
+  width: 75%;
+  transform-origin: center center;
+  will-change: transform, opacity;
 }
 
-.card-background {
+.image-section {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.image-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%);
-  transform-origin: bottom;
-  z-index: 0;
+  background: linear-gradient(
+    to right,
+    rgba(4, 85, 191, 0.1),
+    rgba(4, 85, 191, 0.05)
+  );
+}
+
+.text-section {
+  position: relative;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-content {
+  opacity: 1;
+  transform: none;
+  position: relative;
 }
 
 .crew-card:hover .card-content {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(4, 85, 191, 0.15);
+}
+
+.crew-card:hover .image-section {
+  transform: scale(1.05);
 }
 
 .crew-number {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  font-size: 1.2rem;
-  color: rgba(0, 0, 0, 0.4);
-  font-weight: 600;
+  top: 2.5rem;
+  right: 2.5rem;
+  font-size: 1.8rem;
+  color: #0455BF;
+  font-weight: 800;
+  opacity: 0.3;
 }
 
 .crew-name {
-  font-size: 3.5rem;
-  color: #000000;
+  font-size: 4.5rem;
+  color: #0455BF;
   margin: 0 0 1.5rem 0;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #0455BF 0%, #0cbff5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 30px rgba(4, 85, 191, 0.1);
+  text-align: left;
 }
 
 .crew-info {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
 }
 
-.crew-role {
-  font-size: 1.6rem;
-  color: rgba(0, 0, 0, 0.8);
-  margin: 0;
-  font-weight: 500;
-}
-
+.crew-role,
 .crew-type {
-  font-size: 1.2rem;
-  color: rgba(0, 0, 0, 0.6);
+  font-size: 1rem;
+  color: #0455BF;
   margin: 0;
-  font-weight: 400;
+  font-weight: 600;
+  opacity: 0.8;
+  background: rgba(4, 85, 191, 0.08);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+}
+
+.crew-role::before,
+.crew-type::before {
+  content: '#';
+  margin-right: 0.2rem;
+  opacity: 0.7;
+}
+
+.crew-description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #666;
+  opacity: 0.7;
+  margin: 0;
+  max-width: 90%;
+}
+
+@media (max-width: 1024px) {
+  .crews-section {
+    padding: 4rem 2rem;
+  }
+
+  .crew-card {
+    padding: 0;
+  }
+
+  .card-left, .card-right {
+    justify-content: center;
+  }
+
+  .card-content {
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 45% 55%;
+  }
+
+  .text-section {
+    padding: 2.5rem;
+  }
+
+  .crew-name {
+    font-size: 3.5rem;
+  }
+
+  .crew-role,
+  .crew-type {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .crew-description {
+    font-size: 1rem;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -260,21 +492,29 @@ export default {
     font-size: 2.8rem;
     padding: 0 1rem;
   }
-  
+
   .card-content {
+    width: 100%;
+    grid-template-rows: 40% 60%;
+  }
+
+  .text-section {
     padding: 2rem;
   }
   
   .crew-name {
-    font-size: 2.5rem;
+    font-size: 3rem;
+    margin: 0 0 1rem 0;
   }
   
-  .crew-role {
-    font-size: 1.4rem;
+  .crew-info {
+    margin-bottom: 1.5rem;
   }
-  
+
+  .crew-role,
   .crew-type {
-    font-size: 1.1rem;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.7rem;
   }
 }
 </style>

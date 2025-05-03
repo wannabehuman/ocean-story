@@ -11,13 +11,6 @@ export class AppService {
   getHello(): string {
     return 'Hello World 뭐여 대체';
   }
-<<<<<<< HEAD
-
-  getYun(): string {
-    return 'service class 안에 적은 메서드라고 봐야하는 것 같은데'
-  }
-
-=======
   async callForDateRange() {
     const startDate = new Date('2025-01-01');
     const endDate = new Date('2025-12-31');
@@ -148,5 +141,4 @@ export class AppService {
 
     return 'tide';
   }
->>>>>>> yun
 }

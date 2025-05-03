@@ -10,9 +10,9 @@
       <div class="title-content">
         <div class="ocean-title">
           <span class="text-wrapper">
-            <span class="letters letters-left">오늘의</span>
+            <span class="letters letters-left">부스구역</span>
             <span class="letters ampersand"></span>
-            <span class="letters letters-right">낚시왕</span>
+            <span class="letters letters-right"></span>
           </span>
         </div>
       </div>
@@ -29,7 +29,7 @@ import gsap from 'gsap';
 import axios from 'axios';
 
 export default {
-  name: 'RankingView',
+  name: 'RankingFin',
   data() {
     return {
       grid: null,
@@ -195,7 +195,7 @@ export default {
     
     fetchRankingData() {
       // 서버에서 랭킹 데이터 가져오기
-      axios.get('http://localhost/api/ranking')
+      axios.get('http://localhost/api/ranking/complete')
         .then(response => {
           this.rankings = response.data;
           if (this.grid) {
@@ -241,7 +241,6 @@ export default {
           const date = new Date(dateString);
           return date.toLocaleString('ko-KR');
         };
-        
         // 그리드 설정
         this.grid = new Grid({
           el: document.getElementById('grid'),
@@ -291,12 +290,32 @@ export default {
                 }
                 return '-';
               }
+            },
+            {
+              header: '완료',
+              name: 'complete_btn',
+              align: 'center',
+              width: 80,
+              formatter: () => {
+                return `<button class="complete-btn">완료</button>`;
+              }
             }
           ]
         });
         
         // 그리드 테마 설정
         Grid.applyTheme('striped');
+        this.grid.on('click', async (ev) => {
+          const row = this.grid.getRow(ev.rowKey);
+          const user_nm = row.user_nm;
+
+          if (ev.columnName === 'complete_btn') {
+            await fetch(`http://localhost/api/ranking/${user_nm}/complete`, {
+              method: 'PATCH'
+            });
+             this.fetchRankingData(); // 테이블만 새로고침
+          }
+        });
       }
     }
   }

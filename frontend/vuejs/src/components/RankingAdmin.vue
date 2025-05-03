@@ -10,9 +10,9 @@
       <div class="title-content">
         <div class="ocean-title">
           <span class="text-wrapper">
-            <span class="letters letters-left">오늘의</span>
+            <span class="letters letters-left">현장구역</span>
             <span class="letters ampersand"></span>
-            <span class="letters letters-right">낚시왕</span>
+            <span class="letters letters-right"></span>
           </span>
         </div>
       </div>
@@ -29,7 +29,7 @@ import gsap from 'gsap';
 import axios from 'axios';
 
 export default {
-  name: 'RankingView',
+  name: 'RankingAdmin',
   data() {
     return {
       grid: null,
@@ -195,7 +195,7 @@ export default {
     
     fetchRankingData() {
       // 서버에서 랭킹 데이터 가져오기
-      axios.get('http://localhost/api/ranking')
+      axios.get('http://localhost/api/ranking/complete')
         .then(response => {
           this.rankings = response.data;
           if (this.grid) {
@@ -228,7 +228,7 @@ export default {
       if (window.tui && window.tui.Grid) {
         const Grid = window.tui.Grid;
         
-        // 시간 포맷팅 함수
+        // 시간 포맷팅 함수 
         // const formatTime = (seconds) => {
         //   const minutes = Math.floor(seconds / 60);
         //   const remainingSeconds = seconds % 60;
@@ -291,12 +291,50 @@ export default {
                 }
                 return '-';
               }
+            },
+            {
+              header: '시작',
+              name: 'start_btn',
+              align: 'center',
+              width: 80,
+              formatter: () => {
+                return `<button class="start-btn">시작</button>`;
+              }
+            },
+            {
+              header: '종료',
+              name: 'end_btn',
+              align: 'center',
+              width: 80,
+              formatter: () => {
+                return `<button class="end-btn">종료</button>`;
+              }
             }
           ]
         });
         
         // 그리드 테마 설정
         Grid.applyTheme('striped');
+
+        this.grid.on('click', async (ev) => {
+          const row = this.grid.getRow(ev.rowKey);
+          const user_nm = row.user_nm; // 각 row에 user_nm이 있어야 함
+
+          if (ev.columnName === 'start_btn') {
+            await fetch(`http://localhost/api/ranking/${user_nm}/start`, {
+              method: 'PATCH'
+            });
+            this.fetchRankingData();
+            // 필요하다면 그리드 데이터 갱신
+          }
+          if (ev.columnName === 'end_btn') {
+            await fetch(`http://localhost/api/ranking/${user_nm}/end`, {
+              method: 'PATCH'
+            });
+            this.fetchRankingData();
+            // 필요하다면 그리드 데이터 갱신
+          }
+        });
       }
     }
   }

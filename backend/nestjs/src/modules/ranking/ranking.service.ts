@@ -33,4 +33,28 @@ export class RankingService {
   async remove(user_nm: string): Promise<void> {
     await this.rankingRepository.delete(user_nm);
   }
+
+  async registerNickname(nickname: string) {
+    const ranking = this.rankingRepository.create({ user_nm: nickname });
+    return this.rankingRepository.save(ranking);
+  }
+  async setStartTime(user_nm: string) {
+    await this.rankingRepository.update({ user_nm }, { start_dt: new Date() });
+    return { success: true };
+  }
+  
+  async setEndTime(user_nm: string) {
+    await this.rankingRepository.update({ user_nm }, { end_dt: new Date() });
+    return { success: true };
+  }
+
+  async setComplete(user_nm: string) {
+    await this.rankingRepository.update({ user_nm }, { complete_flg: 'Y' });
+    return { success: true };
+  }
+  async getRankings() {
+ 
+    // const where = complete_flg ? { complete_flg: complete_flg } : {};
+    return this.rankingRepository.find({ where: { complete_flg: 'N' } });
+  }
 } 
