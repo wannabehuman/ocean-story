@@ -54,7 +54,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch('http://localhost/api/ranking', {
+        const response = await fetch('/api/ranking', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

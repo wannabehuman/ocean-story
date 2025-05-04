@@ -42,6 +42,7 @@ services:
       context: ./nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Nginx 설정 파일
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - 80:80 # Nginx가 외부에서 80포트로 수신
     depends_on:

@@ -150,7 +150,7 @@ export default defineComponent({
   methods: {
     async findAll(){
       try {
-          const response = await fetch(`http://localhost/api/sea-tides`, {
+          const response = await fetch(`http://ocean-story.kr/api/sea-tides`, {
             credentials: 'include', // 이 옵션 추가
           });
           const data = await response.json();
@@ -161,7 +161,7 @@ export default defineComponent({
     },
     async fetchTideData(year, month, location) {
       try {
-        const response = await fetch(`http://localhost/api/sea-tides/${year}/${month}/${location}`);
+        const response = await fetch(`/api/sea-tides/${year}/${month}/${location}`);
         const data = await response.json();
         this.tideData = data; // 받아온 데이터 저장
         console.log(this.tideData)
