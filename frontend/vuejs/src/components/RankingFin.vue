@@ -195,7 +195,7 @@ export default {
     
     fetchRankingData() {
       // 서버에서 랭킹 데이터 가져오기
-      axios.get('http://ocean-story.kr/api/ranking/complete')
+      axios.get('/api/ranking/complete')
         .then(response => {
           this.rankings = response.data;
           if (this.grid) {

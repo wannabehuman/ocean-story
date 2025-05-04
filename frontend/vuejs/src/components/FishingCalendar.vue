@@ -150,7 +150,7 @@ export default defineComponent({
   methods: {
     async findAll(){
       try {
-          const response = await fetch(`http://ocean-story.kr/api/sea-tides`, {
+          const response = await fetch(`/api/sea-tides`, {
             credentials: 'include', // 이 옵션 추가
           });
           const data = await response.json();
