@@ -150,7 +150,7 @@ export default defineComponent({
   methods: {
     async findAll(){
       try {
-          const response = await fetch(`/api/sea-tides`, {
+          const response = await fetch(`${process.env.VUE_APP_API_URL}/api/sea-tides`, {
             credentials: 'include', // 이 옵션 추가
           });
           const data = await response.json();
@@ -160,8 +160,9 @@ export default defineComponent({
       }
     },
     async fetchTideData(year, month, location) {
+      console.log(process.env.VUE_APP_API_URL);
       try {
-        const response = await fetch(`/api/sea-tides/${year}/${month}/${location}`);
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/api/sea-tides/${year}/${month}/${location}`);
         const data = await response.json();
         this.tideData = data; // 받아온 데이터 저장
         console.log(this.tideData)

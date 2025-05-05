@@ -195,7 +195,7 @@ export default {
     
     fetchRankingData() {
       // 서버에서 랭킹 데이터 가져오기
-      axios.get('/api/ranking/complete')
+      axios.get(`${process.env.VUE_APP_API_URL}/api/ranking/complete`)
         .then(response => {
           this.rankings = response.data;
           if (this.grid) {
@@ -310,7 +310,7 @@ export default {
           const user_nm = row.user_nm;
 
           if (ev.columnName === 'complete_btn') {
-            await fetch(`/api/ranking/${user_nm}/complete`, {
+            await fetch(`${process.env.VUE_APP_API_URL}/api/ranking/${user_nm}/complete`, {
               method: 'PATCH'
             });
              this.fetchRankingData(); // 테이블만 새로고침

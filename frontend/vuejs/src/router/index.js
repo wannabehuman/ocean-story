@@ -3,6 +3,7 @@ import MainPage from '@/components/MainPage.vue'
 import RankingAdmin from '@/components/RankingAdmin.vue'
 import RankingFin from '@/components/RankingFin.vue'
 import NicknameReg from '@/components/NicknameReg.vue'
+import FishMission from '@/components/FishMission.vue'
 const routes = [
   {
     path: '/',
@@ -23,6 +24,16 @@ const routes = [
     path: '/nicknameReg',
     name: 'NicknameReg',
     component: NicknameReg
+  },
+  {
+    path: '/fishMission',
+    name: 'FishMission',
+    component: FishMission
+  },
+  {
+    path: '/fishMission/:nickname',
+    name: 'FishMissionWithNickname',
+    component: FishMission
   }
 ]
 

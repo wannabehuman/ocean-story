@@ -5,12 +5,16 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');  // 모든 라우트에 'api' prefix 적용
   // CORS 설정 추가
+  // app.enableCors({
+  //   origin: 'http://ocean-story.kr', // Vue 개발 서버 주소
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   credentials: true,
+  // });
   app.enableCors({
-    origin: 'http://ocean-story.kr', // Vue 개발 서버 주소
+    origin: 'http://localhost:8080', // Vue 개발 서버 주소
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-
 
   app.use(
     session({

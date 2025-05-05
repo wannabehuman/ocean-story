@@ -195,7 +195,7 @@ export default {
     
     fetchRankingData() {
       // 서버에서 랭킹 데이터 가져오기
-      axios.get('/api/ranking')
+      axios.get(`${process.env.VUE_APP_API_URL}/api/ranking`)
         .then(response => {
           this.rankings = response.data;
           if (this.grid) {

@@ -54,7 +54,28 @@ export default {
         return;
       }
       try {
-        const response = await fetch('/api/ranking', {
+        // 1. 닉네임 중복 검사
+        let isDuplicate = false;
+        try {
+          const checkResponse = await fetch(`${process.env.VUE_APP_API_URL}/api/ranking/${this.nickname}`);
+          if (checkResponse.ok) {
+            const existingUser = await checkResponse.json();
+            // 응답이 객체이고 user_nm 속성이 있으면 중복으로 판단
+            isDuplicate = existingUser && existingUser.user_nm === this.nickname;
+          }
+        } catch (error) {
+          console.log('중복 검사 실패, 등록 계속 진행:', error);
+          // 중복 검사 실패해도 등록 진행
+        }
+        
+        if (isDuplicate) {
+          alert('이미 사용 중인 닉네임입니다. 다른 닉네임을 사용해주세요.');
+          return;
+        }
+
+        // 2. 랭킹 API 호출
+        console.log('랭킹 API 호출 시작...');
+        const rankingResponse = await fetch(`${process.env.VUE_APP_API_URL}/api/ranking`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -62,14 +83,34 @@ export default {
           body: JSON.stringify({ user_nm: this.nickname })
         });
 
-        if (!response.ok) {
-          throw new Error('서버 오류');
+        if (!rankingResponse.ok) {
+          console.error('랭킹 API 오류:', await rankingResponse.text());
+          throw new Error('랭킹 서버 오류');
+        }
+        console.log('랭킹 API 호출 성공!');
+
+        // 3. 어종 미션 API 호출
+        console.log('어종 미션 API 호출 시작...');
+        const missionResponse = await fetch(`${process.env.VUE_APP_API_URL}/api/fish-mission`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ user_nm: this.nickname })
+        });
+
+        if (!missionResponse.ok) {
+          console.error('어종 미션 등록 오류:', await missionResponse.text());
+          // 미션 등록 실패해도 닉네임 등록은 성공으로 처리
+        } else {
+          console.log('어종 미션 API 호출 성공!');
         }
 
         alert('닉네임이 등록되었습니다!');
         this.nickname = '';
       } catch (e) {
-        alert('등록 중 오류가 발생했습니다.');
+        console.error('등록 중 오류:', e);
+        alert('등록 중 오류가 발생했습니다: ' + e.message);
       }
     }
   },

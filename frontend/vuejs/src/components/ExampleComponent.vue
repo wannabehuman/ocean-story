@@ -20,7 +20,7 @@
       };
     },
     mounted() {
-      axios.get('http://localhost/api/data')
+      axios.get(`${process.env.APP_URL}/api/data`)
         .then(response => {
           this.message = response.data.message;
         })

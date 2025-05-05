@@ -3,7 +3,7 @@ import { FishMissionService } from './fish_mission.service';
 import { FishMission } from './fish_mission.entity';
 import { CreateFishMissionDto, UpdateFishMissionDto } from './dto/fish-mission.dto';
 
-@Controller('api/fish-mission')
+@Controller('fish-mission')
 export class FishMissionController {
     constructor(private readonly fishMissionService: FishMissionService) {}
 
@@ -14,6 +14,7 @@ export class FishMissionController {
 
     @Get(':user_nm')
     findOne(@Param('user_nm') user_nm: string): Promise<FishMission> {
+        console.log(user_nm);
         return this.fishMissionService.findOne(user_nm);
     }
 

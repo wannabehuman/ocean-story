@@ -144,7 +144,7 @@ export default {
       });
     },
     fetchCrewData() {
-      axios.get('/api/crews')
+      axios.get(`${process.env.VUE_APP_API_URL}/api/crews`)
         .then(response => {
           // 이미지 URL과 설명 필드가 없는 경우를 위한 기본값 처리
           this.crews = response.data.map(crew => ({

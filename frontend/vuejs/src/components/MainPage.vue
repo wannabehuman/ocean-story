@@ -4,6 +4,7 @@
   <WeatherSec />
   <Ranking />
   <!-- <NickNameReg /> -->
+  <FishMission />
   <CrewInfo />
 </template>
 

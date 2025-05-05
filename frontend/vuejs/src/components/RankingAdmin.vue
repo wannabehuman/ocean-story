@@ -195,7 +195,7 @@ export default {
     
     fetchRankingData() {
       // 서버에서 랭킹 데이터 가져오기
-      axios.get('/api/ranking/complete')
+      axios.get(`${process.env.VUE_APP_API_URL}/api/ranking/complete`)
         .then(response => {
           this.rankings = response.data;
           if (this.grid) {
@@ -309,6 +309,15 @@ export default {
               formatter: () => {
                 return `<button class="end-btn">종료</button>`;
               }
+            },
+            {
+              header: '미션',
+              name: 'mission_btn',
+              align: 'center',
+              width: 80,
+              formatter: () => {
+                return `<button class="mission-btn">미션보기</button>`;
+              }
             }
           ]
         });
@@ -321,18 +330,22 @@ export default {
           const user_nm = row.user_nm; // 각 row에 user_nm이 있어야 함
 
           if (ev.columnName === 'start_btn') {
-            await fetch(`/api/ranking/${user_nm}/start`, {
+            await fetch(`${process.env.VUE_APP_API_URL}/api/ranking/${user_nm}/start`, {
               method: 'PATCH'
             });
             this.fetchRankingData();
             // 필요하다면 그리드 데이터 갱신
           }
           if (ev.columnName === 'end_btn') {
-            await fetch(`/api/ranking/${user_nm}/end`, {
+            await fetch(`${process.env.VUE_APP_API_URL}/api/ranking/${user_nm}/end`, {
               method: 'PATCH'
             });
             this.fetchRankingData();
             // 필요하다면 그리드 데이터 갱신
+          }
+          if (ev.columnName === 'mission_btn') {
+            // 미션 페이지로 이동 (쿼리 스트링 방식)
+            window.location.href = `/fishMission?nickname=${encodeURIComponent(user_nm)}`;
           }
         });
       }
@@ -501,6 +514,34 @@ export default {
   margin-top: 10px;
   border-radius: 5px;
   overflow: hidden;
+}
+
+.start-btn, .end-btn, .mission-btn {
+  padding: 5px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.start-btn {
+  background-color: #4CAF50;
+}
+
+.end-btn {
+  background-color: #F44336;
+}
+
+.mission-btn {
+  background-color: #2196F3;
+}
+
+.start-btn:hover, .end-btn:hover, .mission-btn:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
