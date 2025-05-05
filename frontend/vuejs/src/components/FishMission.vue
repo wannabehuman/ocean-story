@@ -51,7 +51,7 @@ export default {
   name: 'FishMission',
   data() {
     return {
-      userNickname: '',
+      userNickname: this.$route.query.nickname || this.$route.params.nickname,
       inputNickname: '',
       userMission: null,
       hasSearched: false,
@@ -79,6 +79,9 @@ export default {
       this.loadUserMissionByNickname(nickname);
     }
   },
+  mounted() {
+    this.loadUserMissionByNickname(this.userNickname);
+  },
   methods: {
     async loadUserMission() {
       if (!this.inputNickname.trim()) {
@@ -91,7 +94,7 @@ export default {
     
     async loadUserMissionByNickname(nickname) {
       try {
-        const response = await axios.get(`${process.env.APP_URL}/api/fish-mission/${nickname}`);
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}/api/fish-mission/${nickname}`);
         if (response.data) {
           console.log(response.data);
           this.userMission = response.data;

@@ -106,8 +106,19 @@ export default {
           console.log('어종 미션 API 호출 성공!');
         }
 
-        alert('닉네임이 등록되었습니다!');
+        // 등록한 닉네임 저장
+        const registeredNickname = this.nickname;
+        
+        // 입력 필드 초기화
         this.nickname = '';
+        
+        // 성공 메시지 표시
+        alert('닉네임이 등록되었습니다! 잠시 후 미션 화면으로 이동합니다.');
+        
+        // 2초 지연 후 미션 페이지로 리다이렉트
+        setTimeout(() => {
+          this.$router.push(`/fishMission?nickname=${encodeURIComponent(registeredNickname)}`);
+        }, 2000);
       } catch (e) {
         console.error('등록 중 오류:', e);
         alert('등록 중 오류가 발생했습니다: ' + e.message);
