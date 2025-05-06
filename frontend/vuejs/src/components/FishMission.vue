@@ -1,46 +1,52 @@
 <template>
-  <div class="fish-mission-container">
-    <div class="mission-header">
-      <h2>세상을 낚을 주인공은 당신입니다</h2>
-      <div class="nickname-input" v-if="!userNickname">
-        <input 
-          v-model="inputNickname" 
-          placeholder="닉네임을 입력하세요" 
-          @keyup.enter="loadUserMission"
-        />
-        <button @click="loadUserMission">조회</button>
-      </div>
-      <div class="user-info" v-else>
-        <p class="user-nickname">{{ userNickname }}님! 해당 물고기를 잡아오세요!</p>
-      </div>
-    </div>
+  <div class="wrap-fishingM">
 
-    <div class="fish-mission-content" v-if="userMission">
-      <div class="fish-types-grid">
-        <div 
-          class="fish-type-card" 
-          v-for="(typeName, key) in fishTypeNames" 
-          :key="key"
-          :class="{ 'completed': userMission[key] === 'Y' }"
-        >
-          <div class="fish-icon">
-            <img :src="fishTypeIcons[key]" :alt="typeName">
-
-          </div>
-          <div class="fish-type-info">
-            <p class="fish-type-name">{{ typeName }}</p>
+    
+    <div class="fish-mission-container">
+      <div class="mission-header">
+        <h2>세상을 낚을 주인공은 당신입니다</h2>
+        <div class="nickname-input" v-if="!userNickname">
+          <input 
+            v-model="inputNickname" 
+            placeholder="닉네임을 입력하세요" 
+            @keyup.enter="loadUserMission"
+          />
+          <button @click="loadUserMission">조회</button>
+        </div>
+        <div class="user-info" v-else>
+          <p class="user-nickname">{{ userNickname }}님! 해당 물고기를 잡아오세요!</p>
+        </div>
+      </div>
+  
+      <div class="fish-mission-content" v-if="userMission">
+        <div class="fish-types-grid">
+          <div 
+            class="fish-type-card" 
+            v-for="(typeName, key) in fishTypeNames" 
+            :key="key"
+            :class="{ 'completed': userMission[key] === 'Y' }"
+          >
+            <div class="fish-icon">
+              <img :src="fishTypeIcons[key]" :alt="typeName">
+  
+            </div>
+            <div class="fish-type-info">
+              <p class="fish-type-name">{{ typeName }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    
-    <div v-else-if="hasSearched" class="no-mission">
-      <p>{{ inputNickname || userNickname }}님의 어종 미션 정보가 없습니다.</p>
+      
+      <div v-else-if="hasSearched" class="no-mission">
+        <p>{{ inputNickname || userNickname }}님의 어종 미션 정보가 없습니다.</p>
+      </div>
+  
+      <div v-else-if="!userNickname" class="instruction">
+        <p>닉네임을 입력하여 어종 미션 상태를 확인하세요.</p>
+      </div>
     </div>
 
-    <div v-else-if="!userNickname" class="instruction">
-      <p>닉네임을 입력하여 어종 미션 상태를 확인하세요.</p>
-    </div>
+
   </div>
 </template>
 
@@ -129,12 +135,20 @@ export default {
 </script>
 
 <style scoped>
+.wrap-fishingM {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .fish-mission-container {
+  width: 80%;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  max-width: 1000px;
   margin: 0 auto;
 }
 

@@ -12,7 +12,7 @@
     "@fullcalendar/vue3": "^6.1.17",
     "axios": "^1.7.9",
     "core-js": "^3.8.3",
-    "gsap": "^3.12.7",
+    "gsap": "^3.13.0",
     "scrollreveal": "^4.0.9",
     "vue": "^3.2.13",
     "vue-router": "^4.5.1"
