@@ -228,13 +228,6 @@ export default {
       if (window.tui && window.tui.Grid) {
         const Grid = window.tui.Grid;
         
-        // 시간 포맷팅 함수 
-        // const formatTime = (seconds) => {
-        //   const minutes = Math.floor(seconds / 60);
-        //   const remainingSeconds = seconds % 60;
-        //   return `${minutes}분 ${remainingSeconds}초`;
-        // };
-        
         // 날짜 포맷팅 함수
         const formatDate = (dateString) => {
           if (!dateString) return '';
@@ -273,6 +266,8 @@ export default {
               name: 'time_calc',
               align: 'center',
               width: 120,
+              sortable: true,
+              sortingType: 'number',
               formatter: ({ row }) => {
                 const start = row.start_dt ? new Date(row.start_dt) : null;
                 const end = row.end_dt ? new Date(row.end_dt) : null;
@@ -290,6 +285,22 @@ export default {
                   }
                 }
                 return '-';
+              },
+              comparator: (valueA, valueB, rowA, rowB) => {
+                const startA = rowA.start_dt ? new Date(rowA.start_dt) : null;
+                const endA = rowA.end_dt ? new Date(rowA.end_dt) : null;
+                const startB = rowB.start_dt ? new Date(rowB.start_dt) : null;
+                const endB = rowB.end_dt ? new Date(rowB.end_dt) : null;
+                
+                const diffA = startA && endA ? endA - startA : Infinity;
+                const diffB = startB && endB ? endB - startB : Infinity;
+                
+                // 소요시간이 없는 항목(Infinity)은 아래로
+                if (diffA === Infinity && diffB === Infinity) return 0;
+                if (diffA === Infinity) return 1;
+                if (diffB === Infinity) return -1;
+                
+                return diffA - diffB;
               }
             },
             {
@@ -324,6 +335,9 @@ export default {
         
         // 그리드 테마 설정
         Grid.applyTheme('striped');
+        
+        // 소요시간 기준으로 정렬 (오름차순)
+        this.grid.sort('time_calc', true);
 
         this.grid.on('click', async (ev) => {
           const row = this.grid.getRow(ev.rowKey);

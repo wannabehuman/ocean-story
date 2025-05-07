@@ -13,7 +13,7 @@ export class RankingService {
   ) {}
 
   async findAll(): Promise<Ranking[]> {
-    return this.rankingRepository.find();
+    return this.rankingRepository.find({ where: { complete_flg: 'Y' } });
   }
 
   async findOne(user_nm: string): Promise<Ranking | null> {
