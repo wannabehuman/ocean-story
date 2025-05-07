@@ -256,16 +256,13 @@ export default {
               width: 120
             },
             {
-              header: '시작 시간',
-              name: 'start_dt',
+              header: '완료',
+              name: 'complete_btn',
               align: 'center',
-              formatter: ({ value }) => formatDate(value)
-            },
-            {
-              header: '종료 시간',
-              name: 'end_dt',
-              align: 'center',
-              formatter: ({ value }) => formatDate(value)
+              width: 80,
+              formatter: () => {
+                return `<button class="complete-btn">완료</button>`;
+              }
             },
             {
               header: '소요 시간',
@@ -292,14 +289,17 @@ export default {
               }
             },
             {
-              header: '완료',
-              name: 'complete_btn',
+              header: '시작 시간',
+              name: 'start_dt',
               align: 'center',
-              width: 80,
-              formatter: () => {
-                return `<button class="complete-btn">완료</button>`;
-              }
-            }
+              formatter: ({ value }) => formatDate(value)
+            },
+            {
+              header: '종료 시간',
+              name: 'end_dt',
+              align: 'center',
+              formatter: ({ value }) => formatDate(value)
+            },
           ]
         });
         
@@ -460,13 +460,17 @@ export default {
   letter-spacing: 0.1em;
 }
 
+.tui-grid-container {
+  overflow: scroll;
+}
+
 /* 랭킹 테이블 스타일 */
 .ranking-section {
   position: absolute;
-  top: 30%;
-  left: 45%;
-  transform: translate(-50%, -40%);
-  width: 50%;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%) !important;
+  width: 100%;
   min-height: 400px;
   max-width: 900px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -505,6 +509,7 @@ export default {
   
   .ranking-section {
     width: 90%;
+    height: 80vh;
     padding: 15px;
   }
 }
@@ -525,7 +530,6 @@ export default {
   }
   
   .ranking-section {
-    width: 95%;
     padding: 10px;
   }
 }

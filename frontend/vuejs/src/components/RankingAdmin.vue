@@ -257,6 +257,33 @@ export default {
               width: 120
             },
             {
+              header: '시작',
+              name: 'start_btn',
+              align: 'center',
+              width: 80,
+              formatter: () => {
+                return `<button class="start-btn">시작</button>`;
+              }
+            },
+            {
+              header: '종료',
+              name: 'end_btn',
+              align: 'center',
+              width: 80,
+              formatter: () => {
+                return `<button class="end-btn">종료</button>`;
+              }
+            },
+            {
+              header: '미션',
+              name: 'mission_btn',
+              align: 'center',
+              width: 80,
+              formatter: () => {
+                return `<button class="mission-btn">미션보기</button>`;
+              }
+            },
+            {
               header: '시작 시간',
               name: 'start_dt',
               align: 'center',
@@ -292,33 +319,7 @@ export default {
                 return '-';
               }
             },
-            {
-              header: '시작',
-              name: 'start_btn',
-              align: 'center',
-              width: 80,
-              formatter: () => {
-                return `<button class="start-btn">시작</button>`;
-              }
-            },
-            {
-              header: '종료',
-              name: 'end_btn',
-              align: 'center',
-              width: 80,
-              formatter: () => {
-                return `<button class="end-btn">종료</button>`;
-              }
-            },
-            {
-              header: '미션',
-              name: 'mission_btn',
-              align: 'center',
-              width: 80,
-              formatter: () => {
-                return `<button class="mission-btn">미션보기</button>`;
-              }
-            }
+
           ]
         });
         
@@ -492,13 +493,17 @@ export default {
   letter-spacing: 0.1em;
 }
 
+.tui-grid-container {
+  overflow: scroll;
+}
+
 /* 랭킹 테이블 스타일 */
 .ranking-section {
   position: absolute;
-  top: 30%;
-  left: 45%;
-  transform: translate(-50%, -40%);
-  width: 50%;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%) !important;
+  width: 100%;
   min-height: 400px;
   max-width: 900px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -565,6 +570,7 @@ export default {
   
   .ranking-section {
     width: 90%;
+    height: 80vh;
     padding: 15px;
   }
 }
@@ -585,7 +591,6 @@ export default {
   }
   
   .ranking-section {
-    width: 95%;
     padding: 10px;
   }
 }

@@ -4,7 +4,7 @@
     
     <div class="fish-mission-container">
       <div class="mission-header">
-        <h2>세상을 낚을 주인공은 당신입니다</h2>
+        <h2>세상을 낚을<br> 주인공은<br> 당신입니다</h2>
         <div class="nickname-input" v-if="!userNickname">
           <input 
             v-model="inputNickname" 
@@ -38,11 +38,11 @@
       </div>
       
       <div v-else-if="hasSearched" class="no-mission">
-        <p>{{ inputNickname || userNickname }}님의 어종 미션 정보가 없습니다.</p>
+        <p>{{ inputNickname || userNickname }}님의<br> 어종 미션 정보가 없습니다.</p>
       </div>
   
       <div v-else-if="!userNickname" class="instruction">
-        <p>닉네임을 입력하여 어종 미션 상태를 확인하세요.</p>
+        <p>닉네임을 입력하여<br> 어종 미션 상태를 확인하세요.</p>
       </div>
     </div>
 
@@ -160,7 +160,8 @@ export default {
 .mission-header h2 {
   color: #0455BF;
   font-size: 2rem;
-  margin-bottom: 15px;
+  margin: 85px 0 40px;
+  line-height: 2.5rem;
 }
 
 .nickname-input {
@@ -186,6 +187,7 @@ export default {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  white-space: nowrap;
 }
 
 .nickname-input button:hover {
@@ -306,7 +308,7 @@ export default {
   }
   
   .nickname-input input {
-    width: 180px;
+    width: 100%;
   }
 }
 </style>

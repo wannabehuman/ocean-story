@@ -512,7 +512,7 @@ export default {
   }
   
   .ranking-section {
-    width: 95%;
+    /* width: 95%; */
     padding: 10px;
   }
 }
