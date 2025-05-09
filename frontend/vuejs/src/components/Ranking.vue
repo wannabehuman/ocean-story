@@ -316,7 +316,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .ocean-container {
   width: 100%;
@@ -474,7 +473,7 @@ export default {
 }
 
 #grid {
-  margin-top: 10px;
+  height: 100%;
   border-radius: 5px;
   overflow: hidden;
 }
@@ -500,8 +499,14 @@ export default {
   
   .ranking-section {
     width: 90%;
+    height: 70%;
     padding: 15px;
+    position: unset;
   }
+
+  #grid .tui-grid-table { border: 2px solid red}
+  /* #grid .tui-grid-table th:nth-child(3) {display: none;}  */
+
 }
 
 @media (max-width: 480px) {
@@ -520,7 +525,7 @@ export default {
   }
   
   .ranking-section {
-    width: 95%;
+    /* width: 95%; */
     padding: 10px;
   }
 }
