@@ -393,7 +393,7 @@ export default defineComponent({
 .solar-date,
 .fc-col-header-cell-cushion {
     font-family: 'HakgyoansimDunggeunmisoTTF-B', sans-serif !important;
-    font-size: 24px !important;
+    font-size: 24px;
 }
 
 /* 조석 정보는 Regular 버전 사용 */
@@ -424,7 +424,8 @@ export default defineComponent({
 /* 전체 캘린더 컨테이너 */
 .fc {
   background-color: #9de5fb;
-  padding: 20px;
+  /* padding: 20px; */
+  padding: 0px;
   border-radius: 10px;
   width: 100% !important;  /* 또는 특정 픽셀값 예: 1200px */
   max-width: 1400px !important;  /* 최대 너비 설정 */
@@ -671,10 +672,46 @@ export default defineComponent({
 /* 툴바 제목 스타일 */
 .fc-toolbar-title {
     font-family: 'HakgyoansimDunggeunmisoTTF-B', sans-serif !important;
-    font-size: 1.5em !important;
-    margin: 0 20px !important;
+    font-size: 1.5em;
+    margin: 0 20px ;
+    letter-spacing: -1px;
 }
 .background-color {
   background-color: #0bbff5
 }
+
+
+@media (max-width: 768px) {
+
+  .calendar-container {
+    padding: 20px 10px;
+  }
+
+  .fc-toolbar-title {
+   font-size: 1.4em !important;
+   white-space: nowrap;
+   margin: 0;
+  }
+
+
+  .solar-date,
+  .fc .fc-col-header-cell-cushion {
+    font-size: 1rem;
+  }
+
+  .tide-container {
+    flex-wrap: wrap;
+    font-size: .9rem;
+  }
+
+
+
+  .tide-divider {
+    display: none;
+  }
+
+
+}
+
+
 </style>

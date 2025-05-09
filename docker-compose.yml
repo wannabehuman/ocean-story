@@ -45,6 +45,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - 80:80 # Nginx가 외부에서 80포트로 수신
+      - 443:443 # HTTPS 포트 추가
     depends_on:
       - backend
       # - frontend
