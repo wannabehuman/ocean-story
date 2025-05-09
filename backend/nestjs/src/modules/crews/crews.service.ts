@@ -25,42 +25,48 @@ export class CrewsService implements OnModuleInit {
         crew_role: '선장',
         crew_rank: '0',
         crew_type: '이상한사람',
-        crew_status: '재직중'
+        crew_status: '재직중',
+        description: '원기는 이상한 사람입니다.'
       },
       {
         crew_nm: '윤정서',
         crew_role: '부선장',
         crew_rank: '1',
         crew_type: '이상한사람',
-        crew_status: '재직중'
+        crew_status: '재직중',
+        description: '정서는 이상한 사람입니다.'
       },
       {
         crew_nm: '오수민',
         crew_role: '항해사',
         crew_rank: '1',
         crew_type: '착한사람',
-        crew_status: '재직중'
+        crew_status: '재직중',
+        description: '수민은 착한 사람입니다.'
       },
       {
         crew_nm: '태수호',
         crew_role: '척척석사',
         crew_rank: '2',
         crew_type: '똑똑한사람',
-        crew_status: '재직중'
+        crew_status: '재직중',
+        description: '수호는 똑똑한 사람입니다.'
       },
       {
         crew_nm: '김진호',
         crew_role: '취준생',
         crew_rank: '2',
         crew_type: '착한사람',
-        crew_status: '재직중'
+        crew_status: '재직중',
+        description: '진호는 착한 사람입니다.'
       },
       {
         crew_nm: '이상화',
         crew_role: '노예',
         crew_rank: '3',
         crew_type: '불쌍한사람',
-        crew_status: '재직중'
+        crew_status: '재직중',
+        description: '상화는 불쌍한 사람입니다.'
       }
     ];
 

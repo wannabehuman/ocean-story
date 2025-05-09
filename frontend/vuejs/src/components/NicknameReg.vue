@@ -118,7 +118,7 @@ export default {
         // 2초 지연 후 미션 페이지로 리다이렉트
         setTimeout(() => {
           this.$router.push(`/fishMission?nickname=${encodeURIComponent(registeredNickname)}`);
-        }, 2000);
+        }, 1000);
       } catch (e) {
         console.error('등록 중 오류:', e);
         alert('등록 중 오류가 발생했습니다: ' + e.message);

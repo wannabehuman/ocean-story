@@ -63,11 +63,11 @@ export default {
         fish_type5: ''
       },
       fishTypeIcons: {
-        fish_type1: 'https://via.placeholder.com/150?text=고등어',
-        fish_type2: 'https://via.placeholder.com/150?text=갈치',
-        fish_type3: 'https://via.placeholder.com/150?text=문어',
-        fish_type4: 'https://via.placeholder.com/150?text=오징어',
-        fish_type5: 'https://via.placeholder.com/150?text=광어'
+        fish_type1: '',
+        fish_type2: '',
+        fish_type3: '',
+        fish_type4: '',
+        fish_type5: ''
       }
     };
   },
@@ -91,7 +91,10 @@ export default {
       
       this.loadUserMissionByNickname(this.inputNickname);
     },
-    
+    async findPath(path) {
+      console.log(`/images/${path}.jpeg`);
+      return `/images/${path}.jpeg`;
+    },
     async loadUserMissionByNickname(nickname) {
       try {
         const response = await axios.get(`${process.env.VUE_APP_API_URL}/api/fish-mission/${nickname}`);
@@ -105,9 +108,16 @@ export default {
             fish_type2: response.data.fish_type2,
             fish_type3: response.data.fish_type3,
             fish_type4: response.data.fish_type4,
-            fish_type5: response.data.fish_type5
+            fish_type5: response.data.fish_type5,
+
           };
-          
+          this.fishTypeIcons = {
+            fish_type1: await this.findPath(response.data.fish_type1),
+            fish_type2: await this.findPath(response.data.fish_type2),
+            fish_type3: await this.findPath(response.data.fish_type3),
+            fish_type4: await this.findPath(response.data.fish_type4),
+            fish_type5: await this.findPath(response.data.fish_type5),
+          };
         //   if (this.$router && this.$route.query.nickname !== nickname) {
         //     this.$router.push({
         //       path: '/fishMission',

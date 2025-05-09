@@ -13,4 +13,5 @@ export class UpdateCrewsDto {
 
   crew_status?: string;
 
+  description?: string;
 }

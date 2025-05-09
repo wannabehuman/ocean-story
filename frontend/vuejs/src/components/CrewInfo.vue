@@ -150,8 +150,9 @@ export default {
           this.crews = response.data.map(crew => ({
             ...crew,
             image_url: crew.image_url || '/default-profile.jpg',
-            description: crew.description || '선원에 대한 자세한 소개가 곧 업데이트될 예정입니다.'
+            // description: crew.description || '선원에 대한 자세한 소개가 곧 업데이트될 예정입니다.'
           }));
+          console.log(this.crews);
           this.$nextTick(() => {
             this.initCardAnimations();
           });

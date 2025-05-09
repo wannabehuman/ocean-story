@@ -48,4 +48,12 @@ export class Crews{
     })
     crew_status: string;
 
+    @Column({
+        default:'',
+        type:'varchar',
+        name:'description',
+        comment:'크루 소개',
+    })
+    description: string;
+
 }

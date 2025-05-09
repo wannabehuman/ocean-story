@@ -14,4 +14,5 @@ export class CreateCrewsDto {
 
   crew_status: string;
 
+  description: string;
 }
