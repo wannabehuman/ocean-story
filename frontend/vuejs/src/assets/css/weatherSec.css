@@ -49,6 +49,17 @@
     }
 
 
+    /* WAVE ICON */
+    .wave-icon {
+      width: 100%;
+      height: 38%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: url(../wthr_wave.png) no-repeat center/cover;
+    }
+
+
   }
   
 
@@ -73,6 +84,7 @@
     font-size: 3rem;
     color: #fff;
     line-height: 3.7rem;
+    text-align: left;
 
 
     /* WEATEHR INFO */
@@ -96,6 +108,8 @@
     /* OTHER INFO */
     .othr-info {
       display: flex;
+      padding: 0;
+      margin: 0;
 
       li {
         height: 100px;
@@ -115,3 +129,61 @@
 
 
 }
+
+
+
+
+/* 반응형 ~ 768PX */
+@media (max-width: 768px) {
+.wrap.weather-wrap {
+
+  .wthr-cont {
+    height: 516px;
+  }
+
+
+  .wthr-info-top {
+    padding: 30px;
+    font-size: 2.2rem;
+    line-height: normal;
+    flex-wrap: wrap;
+    margin-bottom: 70px;
+  }
+
+  .wthr-info {
+    text-align: left;
+    white-space: nowrap;
+  }
+
+
+  .wthr-icon-box {
+    .wthr-icon {
+      .loti-icon {
+        width: 200px;
+        height: 200px;
+        top: 10px;
+        right: 0;
+      }
+    }
+  }
+
+
+  .wthr-info-bttm {
+    .othr-info {
+
+      li {
+        font-size: 1.2rem;
+      }
+        
+    }
+  }
+
+}  
+}
+/* 반응형 ~ 768PX // */
+
+
+
+/* 반응형 480PX */
+@media (max-width: 480px) {}
+/* 반응형 480PX // */
