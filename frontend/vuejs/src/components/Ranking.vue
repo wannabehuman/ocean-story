@@ -161,7 +161,7 @@ export default {
       }, 1500); // 초기 페이드인 후에 시작
       
       // 텍스트 애니메이션
-      const letters = document.querySelectorAll('.letters');
+      const letters = this.$el.querySelectorAll('.letters');
       letters.forEach(letter => {
         gsap.to(letter, waveEffect);
       });

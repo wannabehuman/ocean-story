@@ -4,6 +4,7 @@ import RankingAdmin from '@/components/RankingAdmin.vue'
 import RankingFin from '@/components/RankingFin.vue'
 import NicknameReg from '@/components/NicknameReg.vue'
 import FishMission from '@/components/FishMission.vue'
+import AboutUs from '@/components/AboutUs.vue'
 const routes = [
   {
     path: '/',
@@ -34,6 +35,11 @@ const routes = [
     path: '/fishMission/:nickname',
     name: 'FishMissionWithNickname',
     component: FishMission
+  },
+  {
+    path: '/aboutUs',
+    name: 'AboutUs',
+    component: AboutUs
   }
 ]
 

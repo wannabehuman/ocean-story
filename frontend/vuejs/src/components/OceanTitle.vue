@@ -103,7 +103,7 @@ export default {
         duration: 0.6,
         ease: "power3.out"
       }, '-=0.3');
-      const letters = document.querySelectorAll('.letters');
+      const letters = this.$el.querySelectorAll('.letters');
       letters.forEach(letter => {
         gsap.to(letter, waveEffect);
       });
