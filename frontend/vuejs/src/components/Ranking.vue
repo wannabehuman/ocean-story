@@ -197,7 +197,16 @@ export default {
       // 서버에서 랭킹 데이터 가져오기
       axios.get(`${process.env.VUE_APP_API_URL}/api/ranking`)
         .then(response => {
-          this.rankings = response.data;
+          // 상위 15명만 필터링
+          this.rankings = response.data
+            .filter(item => item.complete_flg === 'Y') // 완료된 기록만 필터링
+            .sort((a, b) => {
+              const timeA = a.time_calc || Infinity;
+              const timeB = b.time_calc || Infinity;
+              return timeA - timeB;
+            })
+            .slice(0, 15); // 상위 15명만 선택
+
           if (this.grid) {
             // 이미 그리드가 초기화된 경우 데이터만 업데이트
             this.grid.resetData(this.rankings);
@@ -208,14 +217,14 @@ export default {
         })
         .catch(error => {
           console.error('랭킹 데이터를 불러오는데 실패했습니다:', error);
-          // 에러 발생 시 샘플 데이터로 그리드 초기화
+          // 에러 발생 시 샘플 데이터로 그리드 초기화 (상위 15명만)
           this.rankings = [
             { user_nm: '홍길동', start_dt: '2023-06-01 09:00:00', end_dt: '2023-06-01 09:15:30', time_calc: 930, complete_flg: 'Y' },
             { user_nm: '김영희', start_dt: '2023-06-01 10:30:00', end_dt: '2023-06-01 10:42:15', time_calc: 735, complete_flg: 'Y' },
             { user_nm: '박철수', start_dt: '2023-06-02 11:20:00', end_dt: '2023-06-02 11:35:45', time_calc: 945, complete_flg: 'Y' },
             { user_nm: '이영수', start_dt: '2023-06-03 13:10:00', end_dt: '2023-06-03 13:22:20', time_calc: 740, complete_flg: 'Y' },
             { user_nm: '최지민', start_dt: '2023-06-04 15:00:00', end_dt: '2023-06-04 15:18:40', time_calc: 1120, complete_flg: 'Y' }
-          ];
+          ].slice(0, 15);
           if (this.grid) {
             this.grid.resetData(this.rankings);
           } else {
