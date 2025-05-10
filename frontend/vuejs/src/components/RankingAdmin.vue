@@ -43,7 +43,7 @@ export default {
     // 5초마다 랭킹 데이터 새로고침
     this.refreshInterval = setInterval(() => {
       this.fetchRankingData();
-    }, 30000);
+    }, 5000);
   },
   beforeUnmount() {
     // 컴포넌트 제거 시 인터벌 정리

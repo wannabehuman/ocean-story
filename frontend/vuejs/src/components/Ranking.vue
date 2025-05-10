@@ -40,10 +40,10 @@ export default {
   mounted() {
     this.initAnimation();
     this.loadGridLibrary();
-    // 5초마다 랭킹 데이터 새로고침
-    // this.refreshInterval = setInterval(() => {
-    //   this.fetchRankingData();
-    // }, 30000);
+    // 10초마다 랭킹 데이터 새로고침
+    this.refreshInterval = setInterval(() => {
+      this.fetchRankingData();
+    }, 10000);
   },
   beforeUnmount() {
     // 컴포넌트 제거 시 인터벌 정리
