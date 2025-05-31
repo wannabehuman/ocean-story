@@ -1,6 +1,3 @@
-
-
-
 version: "3.8"
 services:
   backend:
@@ -20,20 +17,20 @@ services:
     networks:
       - app-network
   frontend:
-     build:
+    build:
       dockerfile: Dockerfile
       context: ./frontend/
-     volumes:
+    volumes:
       - ./frontend/vuejs:/frontend/vuejs
       - /frontend/vuejs/node_modules
     #  command: npm run serve
-     environment: 
+    environment: 
       - CHOKIDAR_USEPOLLING=true
-     expose:
+    expose:
       - 8080 # 내부적으로 vue 사용하는 포트
     #  ports:
     #   - 8080:8080 # vue가 직접 연결될 경우 사용 (디버깅 시 편리)
-     networks:
+    networks:
       - app-network
   nginx:
     image: nginx:latest
@@ -48,7 +45,7 @@ services:
       - 443:443 # HTTPS 포트 추가
     depends_on:
       - backend
-      # - frontend
+      - frontend
     networks:
       - app-network
 

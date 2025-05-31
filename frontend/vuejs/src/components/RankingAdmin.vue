@@ -44,6 +44,7 @@ export default {
     this.refreshInterval = setInterval(() => {
       this.fetchRankingData();
     }, 30000);
+    
   },
   beforeUnmount() {
     // 컴포넌트 제거 시 인터벌 정리
