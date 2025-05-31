@@ -25,3 +25,5 @@ jobs:
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}   # 또는 key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
+          source: "../*"
+          target: "/home/ocean-story"
