@@ -1,32 +1,27 @@
-name: Deploy via FTP
+name: SFTP Deploy
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [closed]
-    branches:
-      - main
 
 jobs:
-  ftp-deploy:
+  sftp-deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      # (옵션) 빌드가 필요한 경우
+      # (옵션) 빌드 필요시
       # - name: Install dependencies
       #   run: npm install
       # - name: Build project
       #   run: npm run build
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: SFTP Deploy
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          host: ${{ secrets.SFTP_SERVER }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}   # 또는 key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
