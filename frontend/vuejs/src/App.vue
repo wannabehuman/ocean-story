@@ -1,5 +1,5 @@
 <template>
-  !!!!!bbㅠㅠ
+  !!!!!bbㅠ
   <router-view />
 </template>
 
