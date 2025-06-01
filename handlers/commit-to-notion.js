@@ -1,4 +1,4 @@
-import { registerModelHandler } from "@modelcontextprotocol/server-core";
+// import { registerModelHandler } from "@modelcontextprotocol/server-core";
 import { Client } from "@notionhq/client";
 import dotenv from "dotenv";
 dotenv.config();
