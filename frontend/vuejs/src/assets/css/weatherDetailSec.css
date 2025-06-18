@@ -1,0 +1,177 @@
+/*
+ * @Overview weather detail section css
+ * @History  2025-05-31 / 윤정서 / 최초작성 
+*/
+
+.wrap.weather-detail-wrap {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0bbff5;
+
+  ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  p {
+    padding: 0;
+    margin: 0;
+  }
+
+
+  
+  /* WEATHER DETAIL CONTAINER */
+  .dwthr-cont {
+    background-color: #FFFFFF99;
+    width: 82%;
+    max-width: 1574px;
+    padding: 35px 22px 60px;
+    border-radius: 10px;
+
+
+    /* DEATIL TITLE */
+    .dwthr-tit {
+      color: #045A9B;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #1293C4;
+      
+      .tit-loca {
+        font-size: 1.5rem;
+      }
+
+      .tit-addr {
+        font-size: 1.125rem;
+        margin-top: 20px;
+      }
+
+    }
+    /* DEATIL TITLE // */
+
+
+    /* DETAIL BOX */
+    .dwther-box {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      margin-top: 38px;
+
+
+      /* DETAIL WEATHER INFO BOX  */
+      .dwthr-info-box {
+        width: 214px;
+        height: 335px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+        border-radius: 5px;
+        background-color: #FFFFFFBA;
+        padding: 30px;
+        color: #045A9B;
+        font-size: 1.25rem;
+        line-height: 2;
+        text-align: left;
+
+
+        /* INFO HEADER */
+        /* .dwthr-info-header {} */
+
+        /* INFO BODY */
+        /* .dwthr-info-body {} */
+
+        /* INFO FOOTER */
+        /* .dwthr-info-footer {} */
+
+      }
+
+
+      /* WEATHER FIELD */
+      .dwthr-field {
+        background-color: #83BEDC78;
+        /* width: 100%; */
+        width: calc(100% - 284px);
+        display: flex;
+        gap: 22px;
+        border-radius: 10px;
+
+        /* FIELD TITLE */
+        .dwthr-field-tit {
+          background-color: #0088C336;
+          padding: 10px 0;
+          color: #045A9B;
+          font-size: 1.125rem;
+          border-radius: 10px;
+        }
+
+        /* F TITLE */
+        .f-tit {
+          padding: 18px 26px;
+          white-space: nowrap;
+        }
+
+
+        /* FIELD BOX */
+        .dwthr-field-box {
+          padding: 10px 0 0;
+          width: 100%;
+          margin-bottom: 10px;
+          margin-right: 14px;
+          box-sizing: border-box;
+          overflow: auto;
+        }
+
+
+        /* INNER */
+        .field-box-inner {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          gap: 10px;
+          padding-bottom: 10px;
+          box-sizing: border-box;
+        }
+
+
+        /* WEATEHR LINE */
+        .wthr-line {
+          width: 100%;
+          height: 100%;
+          min-width: 90px;
+          display: flex;
+          flex-direction: column;
+          border-radius: 5px;
+          box-sizing: border-box;
+
+          &:first-child {
+            background-color: #ffffff73;
+          }
+        }
+
+
+        /* WEATHER LINE ITEM */
+        .wthr-line-item {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          white-space: nowrap;
+
+          &:first-child {
+            color: #045A9B;
+          }
+        }
+
+
+      }
+
+
+    }
+    /* DETAIL BOX // */
+
+  }
+
+}
