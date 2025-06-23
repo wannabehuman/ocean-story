@@ -1,5 +1,5 @@
 <template>
-  <div class="ocean-container">
+  <div class="ocean-container" :style="{ backgroundImage: `url('${backgroundImage}')` }">
     <div class="background-image"></div>
     <div class="wave-container">
       <div class="wave wave1"></div>
@@ -27,10 +27,30 @@ import gsap from 'gsap';
 
 export default {
   name: 'OceanTitle',
+  data() {
+    return {
+      backgroundImage: ''
+    };
+  },
   mounted() {
     this.initAnimation();
+    this.setBackgroundByTime();
   },
   methods: {
+    setBackgroundByTime() {
+      const currentHour = new Date().getHours();
+      
+      if (currentHour >= 19 || currentHour < 5) {
+        // Evening/Night (7PM to 5AM)
+        this.backgroundImage = '/images/night_bg.png';
+      } else if (currentHour >= 17 && currentHour < 19) {
+        // Afternoon (5PM to 7PM)
+        this.backgroundImage = '/images/afternoon_bg.png';
+      } else {
+        // Morning/Day (5AM to 5PM)
+        this.backgroundImage = '/images/sunny_bg.png';
+      }
+    },
     initAnimation() {
       // 초기 상태 설정
       gsap.set(['.letters', '.line', '.description'], { 
@@ -125,9 +145,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, rgba(205, 236, 250, 0.7) 0%, rgba(225, 245, 254, 0.7) 100%);
+  /* background: linear-gradient(135deg, rgba(205, 236, 250, 0.7) 0%, rgba(225, 245, 254, 0.7) 100%); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   overflow: hidden;
   position: relative;
+  transition: background-image 1s ease;
 }
 
 .background-image {
@@ -172,7 +196,7 @@ export default {
 .wave2 {
   z-index: 2;
   /* opacity: 0.5; */
-  height: 80%;
+  height: 60%;
   background: #6ddcf8;
 
 }
@@ -180,9 +204,9 @@ export default {
 .wave3 {
   z-index: 1;
   /* opacity: 0.3; */
-  height: 100%;
-  background: #a9f6fd;
-
+  /* height: 100%; */
+  /* background: #a9f6fd; */
+  background-image: url('@/../public/images/wthr_wave.png');
 }
 
 @keyframes wave {
@@ -230,7 +254,7 @@ export default {
   display: inline-block;
   font-size: 5.5rem;
   font-weight: bold;
-  color: #0455BF;
+  color: #F2D16C;
   opacity: 0;
 }
 
@@ -247,7 +271,7 @@ export default {
   font-family: serif;
   font-style: italic;
   transform: scale(0.5);
-  color: #0455BF;
+  color: #F2D16C;
 }
 
 .line {
