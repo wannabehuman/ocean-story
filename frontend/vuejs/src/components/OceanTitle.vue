@@ -34,6 +34,11 @@ export default {
       currentHour: new Date().getHours()
     };
   },
+  computed: {
+    descriptionColor() {
+      return this.currentHour >= 19 || this.currentHour < 5 ? '#F2D16C' : '#666';
+    }
+  },
   mounted() {
     this.initAnimation();
     this.setBackgroundByTime();
@@ -293,7 +298,7 @@ export default {
 
 .description {
   font-size: 1.5rem;
-  color: v-bind(currentHour >= 19 || currentHour < 5 ? '#F2D16C' : '#666');
+  color: v-bind(descriptionColor);
   margin: 0;
   transform: translateY(30px);
   opacity: 0;
