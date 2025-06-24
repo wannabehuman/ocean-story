@@ -51,7 +51,7 @@ export default {
         // Evening/Night (7PM to 5AM)
         this.backgroundImage = '/images/night_bg.png';
         this.textColor = '#F2D16C'; // 치즈색 (저녁 7시 이후)
-      } else if (currentHour >= 17 && currentHour < 19) {
+      } else if (this.currentHour >= 17 && this.currentHour < 19) {
         // Afternoon (5PM to 7PM)
         this.backgroundImage = '/images/afternoon_bg.png';
         this.textColor = '#0455BF'; // 원래 파란색
