@@ -3,16 +3,16 @@
   <FishingCalendar />
   <WeatherSec />
   <WeatherDetailSec />
-  <Ranking />
+  <!-- <Ranking /> -->
   <!-- <NickNameReg /> -->
-  <FishMission />
+  <!-- <FishMission /> -->
   <CrewInfo />
 </template>
 
 <script>
 import CrewInfo from './CrewInfo.vue';
 import OceanTitle from './OceanTitle.vue';
-import Ranking from './Ranking.vue';
+// import Ranking from './Ranking.vue';
 import FishingCalendar from './FishingCalendar.vue';
 import WeatherSec from './WeatherSec.vue';
 import WeatherDetailSec from './WeatherDetailSec.vue';
@@ -25,7 +25,7 @@ export default {
     CrewInfo,
     WeatherSec,
     WeatherDetailSec,
-    Ranking,
+    // Ranking,
     FishingCalendar,
     // NickNameReg
   }

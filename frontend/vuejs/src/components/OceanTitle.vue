@@ -29,7 +29,9 @@ export default {
   name: 'OceanTitle',
   data() {
     return {
-      backgroundImage: ''
+      backgroundImage: '',
+      textColor: '#0455BF',
+      currentHour: new Date().getHours()
     };
   },
   mounted() {
@@ -38,17 +40,20 @@ export default {
   },
   methods: {
     setBackgroundByTime() {
-      const currentHour = new Date().getHours();
+      this.currentHour = new Date().getHours();
       
-      if (currentHour >= 19 || currentHour < 5) {
+      if (this.currentHour >= 19 || this.currentHour < 5) {
         // Evening/Night (7PM to 5AM)
         this.backgroundImage = '/images/night_bg.png';
+        this.textColor = '#F2D16C'; // 치즈색 (저녁 7시 이후)
       } else if (currentHour >= 17 && currentHour < 19) {
         // Afternoon (5PM to 7PM)
         this.backgroundImage = '/images/afternoon_bg.png';
+        this.textColor = '#0455BF'; // 원래 파란색
       } else {
         // Morning/Day (5AM to 5PM)
         this.backgroundImage = '/images/sunny_bg.png';
+        this.textColor = '#0455BF'; // 원래 파란색
       }
     },
     initAnimation() {
@@ -254,8 +259,9 @@ export default {
   display: inline-block;
   font-size: 5.5rem;
   font-weight: bold;
-  color: #F2D16C;
+  color: v-bind(textColor);
   opacity: 0;
+  transition: color 0.5s ease;
 }
 
 .letters-left {
@@ -271,7 +277,8 @@ export default {
   font-family: serif;
   font-style: italic;
   transform: scale(0.5);
-  color: #F2D16C;
+  color: v-bind(textColor);
+  transition: color 0.5s ease;
 }
 
 .line {
@@ -286,12 +293,13 @@ export default {
 
 .description {
   font-size: 1.5rem;
-  color: #666;
+  color: v-bind(currentHour >= 19 || currentHour < 5 ? '#F2D16C' : '#666');
   margin: 0;
   transform: translateY(30px);
   opacity: 0;
   font-weight: 300;
   letter-spacing: 0.1em;
+  transition: color 0.5s ease;
 }
 
 @media (max-width: 768px) {
