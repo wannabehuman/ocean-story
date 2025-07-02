@@ -1,5 +1,11 @@
 <template>
-  <div class="ocean-container" :style="{ backgroundImage: `url('${backgroundImage}')` }">
+  <div class="ocean-container">
+    <img 
+      :src="backgroundImage" 
+      class="background-image-full"
+      alt="배경 이미지"
+      loading="lazy"
+    />
     <div class="background-image"></div>
     <div class="wave-container">
       <div class="wave wave1"></div>
@@ -44,22 +50,37 @@ export default {
     this.setBackgroundByTime();
   },
   methods: {
-    setBackgroundByTime() {
+    async setBackgroundByTime() {
       this.currentHour = new Date().getHours();
       
+      // 이미지 프리로드
+      const preloadImage = (src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+        });
+      };
+
+      // 현재 시간에 맞는 이미지 설정
+      let imagePath = '';
       if (this.currentHour >= 19 || this.currentHour < 5) {
         // Evening/Night (7PM to 5AM)
-        this.backgroundImage = '/images/night_bg.png';
-        this.textColor = '#F2D16C'; // 치즈색 (저녁 7시 이후)
+        imagePath = '/images/night_bg.png';
+        this.textColor = '#F2D16C';
       } else if (this.currentHour >= 17 && this.currentHour < 19) {
         // Afternoon (5PM to 7PM)
-        this.backgroundImage = '/images/afternoon_bg.png';
-        this.textColor = '#0455BF'; // 원래 파란색
+        imagePath = '/images/afternoon_bg.png';
+        this.textColor = '#0455BF';
       } else {
         // Morning/Day (5AM to 5PM)
-        this.backgroundImage = '/images/sunny_bg.png';
-        this.textColor = '#0455BF'; // 원래 파란색
+        imagePath = '/images/sunny_bg.png';
+        this.textColor = '#0455BF';
       }
+
+      // 이미지 로드 후에만 배경 전환
+      await preloadImage(imagePath);
+      this.backgroundImage = imagePath;
     },
     initAnimation() {
       // 초기 상태 설정
@@ -155,13 +176,27 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: linear-gradient(135deg, rgba(205, 236, 250, 0.7) 0%, rgba(225, 245, 254, 0.7) 100%); */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   overflow: hidden;
   position: relative;
-  transition: background-image 1s ease;
+}
+
+.background-image-full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  will-change: transform;
+  /* 이미지 스케일을 살짝 크게 하여 스크롤 시 여백이 보이지 않도록 함 */
+  transform: scale(1.02);
+  /* 이미지 로딩 중 깜빡임 방지 */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
 }
 
 .background-image {
