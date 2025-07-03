@@ -13,8 +13,8 @@
             class="tooltip-wrapper"
             :style="{ top: marker.top + 'px', left: marker.left + 'px' }"
           >
-            <button class="marker" @click="handleMarkerClick(marker.label)"></button>
-            <span class="tooltip-text">{{ marker.label }}</span>
+            <button class="marker" @click="handleMarkerClick(marker.label, marker.point)"></button>
+            <span class="tooltip-text">{{ marker.label}}</span>
           </div>
 
         </div>
@@ -33,7 +33,7 @@
           <!-- 낚시 가능/불가능 아이콘 -->
           <div class="status-icons">
             <img src="@/assets/Button/Season Fish_icon.svg"    alt="낚시 가능" @click="SeasonFishClick()" class="status-icon" />
-            <img src="@/assets/Button/Protected Fish_icon.svg" alt="낚시 불가" @click="ProtectedFishClick()" class="status-icon" />
+            <img src="@/assets/Button/Protected Fish_icon.svg" alt="낚시 불가" @click="ProtectedFishClick(this.Curpoint)" class="status-icon" />
           </div>
         
           <!-- 물고기 카드 리스트 -->
@@ -80,41 +80,49 @@
 
 <script>
 import FishDetailInform from './FishDetailInform.vue';
+import axios from 'axios';
+import Papa from 'papaparse';
 
 export default {
     components: 
     {
       FishDetailInform  // ← 이거 있어야 <FishDetailInform /> 쓸 수 있어요!
     },
+
+    
   data() {
     return {
+      
+      fishinform: [],  // 또는 null, {}, "" 등 원하는 초기값
+      fishList2: [],
+      Curpoint: "SW",
       // 세부 지역 선택 
       regions: ['녹산동', '용원동', '신호동', '하단동', '괴정동'],
 
       // 지역별 마커 추가
       markerList: [
-        { top: 460,  left: 360,   label: '가덕도'   },
-        { top: 490,  left: 355,   label: '거제도'   },
-        { top: 340,  left: 135,   label: '군산'     },
-        { top: 145,  left: 405,   label: '동해항'   },
-        { top: 440,  left: 340,   label: '마산'     },
-        { top: 500,  left: 115,   label: '목포항'   },
-        { top: 450,  left: 390,   label: '부산'     },
-        { top: 615,  left: 215,   label: '서귀포'   },
-        { top: 585,  left: 205,   label: '제주'     },
-        { top: 55,   left: 350,   label: '속초'     },
-        { top: 500,  left: 255,   label: '여수'     },
-        { top: 145,  left: 485,   label: '울릉도'   },
-        { top: 400,  left: 430,   label: '울산'     },
-        { top: 155,  left: 145,   label: '인천송도' },
-        { top: 220,  left: 100,   label: '태안'     },
-        { top: 485,  left: 330,   label: '통영'     },
-        { top: 205,  left: 160,   label: '평택'     },
-        { top: 325,  left: 430,   label: '포항'     },
+        { top: 460,  left: 360,   label: '가덕도'  , point: 'SE'        },
+        { top: 490,  left: 355,   label: '거제도'  , point: 'SE'        },
+        { top: 340,  left: 135,   label: '군산'    , point: 'WS'        },
+        { top: 145,  left: 405,   label: '동해항'  , point: 'EN'        },
+        { top: 440,  left: 340,   label: '마산'    , point: 'SE'        },
+        { top: 500,  left: 115,   label: '목포항'  , point: 'SW'        },
+        { top: 450,  left: 390,   label: '부산'    , point: 'SE'        },
+        { top: 615,  left: 215,   label: '서귀포'  , point: 'Jeju'      },
+        { top: 585,  left: 205,   label: '제주'    , point: 'Jeju'      },
+        { top: 55,   left: 350,   label: '속초'    , point: 'EN'        },
+        { top: 500,  left: 255,   label: '여수'    , point: 'SW'        },
+        { top: 145,  left: 485,   label: '울릉도'  , point: 'Ulleungdo' },
+        { top: 400,  left: 430,   label: '울산'    , point: 'ES'        },
+        { top: 155,  left: 145,   label: '인천송도', point: 'WN'        },
+        { top: 220,  left: 100,   label: '태안'    , point: 'WN'        },
+        { top: 485,  left: 330,   label: '통영'    , point: 'SE'        },
+        { top: 205,  left: 160,   label: '평택'    , point: 'WN'        },
+        { top: 325,  left: 430,   label: '포항'    , point: 'ES'        },
       ],
 
       //물고기 리스트 추가 
-      fishList: [
+        fishList: [
         {
           name: '가자미',
           address: '부산광역시 녹산산단232로',
@@ -162,24 +170,45 @@ export default {
         images: [] // 기존처럼 이미지 로딩 또는 수동 배열
     };
   },
+
+  mounted(){
+    this.fetchFishInformData();
+    this.loadFishCSV();
+  },
   // 지역 버튼 클릭 함수 추가 
   methods: {
-    handleMarkerClick(label) 
+
+    PrintColumn(columnName) {
+    const values = this.fishList2.map(row => row[columnName]);
+    console.log(`${columnName} 컬럼 값:`, values);
+    },
+    handleMarkerClick(label, point) 
     { 
       alert(`${label} 클릭!`);
+      const indices = this.filterFish(point, 18, new Date().toISOString().slice(0, 10));
+      this.generateFilteredFishList(indices);
     },
     RegionClick(region) 
     { 
       alert(`${region} 클릭!`);
+      this.fetchFishInformData();
+      this.Curpoint = region;
     },    
-    ProtectedFishClick() 
+    ProtectedFishClick(point) 
     { 
       alert(`금어종 클릭!`);
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const indices = this.filterProtectFish(point, todayStr);
+      this.generateFilteredFishList(indices);
+
     },
 
     SeasonFishClick() 
     { 
       alert(`시즌 어종 클릭!`);
+      const indices = this.filterFish(this.Curpoint, 18, new Date().toISOString().slice(0, 10));
+      this.generateFilteredFishList(indices);
+
     },
     ShowFishDetail(name, image) 
     {
@@ -195,7 +224,137 @@ export default {
     closeDetail() 
     {
         this.selectedFish = null;
-    }
+    },
+
+
+    fetchFishInformData() {
+      axios.get(`${process.env.VUE_APP_API_URL}/api/fishinform`)
+        .then(response => {
+          // 이미지 URL과 설명 필드가 없는 경우를 위한 기본값 처리
+          console.log("API URL:", process.env.VUE_APP_API_URL);
+
+          this.fishinform = response.data;
+        })
+        .catch(error => {
+          console.error('상세 에러 정보:', {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status
+          });
+        });
+    },
+    loadFishCSV() {
+      fetch('/FishInform.csv')  // public 폴더 기준 경로
+        .then(res => res.text())
+        .then(csvText => {
+          Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result) => {
+          this.fishList2 = result.data;  // ❗ 전체 원본 데이터 저장
+          this.columnNames = result.meta.fields;  // ❗ 컬럼 이름 저장
+
+          // 필요하면 image 경로 가공은 따로 배열로 저장해도 됨
+          }});
+        })
+        .catch(err => {
+          console.error('CSV 로딩 실패:', err);
+        });
+    },
+    filterFish(region, temperature, todayStr) {
+      const resultIndices = [];
+
+      // 날짜 처리: "2025-07-03" → Date 객체
+      const today = new Date(todayStr);
+
+      this.fishList2.forEach((row, index) => {
+        // 1. 지역 일치
+        const matchesRegion = row.Region === region;
+
+        // 2. 온도 범위 일치
+        const tempL = parseFloat(row.ActiveTemp_L);
+        const tempH = parseFloat(row.ActiveTemp_H);
+        const matchesTemperature = temperature >= tempL && temperature <= tempH;
+
+        // 3. 날짜 전처리
+        const start = this.parseKoreanMonthDay(row.StartDate);
+        const end = this.parseKoreanMonthDay(row.EndDate);
+        const year = today.getFullYear();
+
+        const startDate = new Date(`${year}-${start}`); // 예: 2025-01-01
+        const endDate = new Date(`${year}-${end}`);
+
+        // 오늘이 날짜 범위 내에 있는지
+        const matchesDate = today >= startDate && today <= endDate;
+
+        if (matchesRegion && matchesTemperature && matchesDate) {
+          resultIndices.push(index);
+        }
+      });
+
+      console.log('🎯 최종 필터 인덱스:', resultIndices);
+      return resultIndices;
+    },
+    parseKoreanMonthDay(dateStr) {
+    // "01월 15일" → "01-15"
+    const match = dateStr.match(/(\d{2})월 (\d{2})일/);
+    if (!match) return '01-01'; // 기본값
+    const [, mm, dd] = match;
+    return `${mm}-${dd}`;
+    },
+    generateFilteredFishList(indices) {
+    const result = [];
+    const basePath = require.context('@/assets/Fish', false, /\.(png|jpg|jpeg)$/);
+
+    indices.forEach(i => {
+      const row = this.fishList2[i];
+      const name = row.FishName;
+      const imageFile = basePath
+        .keys()
+        .find(file => file.includes(name)); // 이름 포함된 이미지 찾기
+
+      result.push({
+        name: name,
+        address: '부산광역시 녹산산단232로',
+        size: row.ProtectLength ? `${row.ProtectLength}cm` : '-',
+        banPeriod: row.ProtectStartDate && row.ProtectEndDate
+          ? `${row.ProtectStartDate} ~ ${row.ProtectEndDate}`
+          : '-',
+        image: imageFile ? basePath(imageFile) : null
+      });
+    });
+
+    this.fishList = result;
+    console.log('🎯 생성된 fishList:', this.fishList);
+    },
+
+    filterProtectFish(region, todayStr) {
+    const today = new Date(todayStr);
+    const resultIndices = [];
+
+    this.fishList2.forEach((row, index) => {
+      const matchesRegion = row.Region === region;
+      const inProtectPeriod = this.isInProtectPeriod(row, today);
+
+      if (matchesRegion && inProtectPeriod) {
+        resultIndices.push(index);
+      }
+    });
+
+    return resultIndices;
+  },
+  isInProtectPeriod(row, today) {
+  const year = today.getFullYear();
+  const startStr = this.parseKoreanMonthDay(row.ProtectStartDate);
+  const endStr = this.parseKoreanMonthDay(row.ProtectEndDate);
+
+  const startDate = new Date(`${year}-${startStr}`);
+  const endDate = new Date(`${year}-${endStr}`);
+
+  return today >= startDate && today <= endDate;
+  },
+
+
   }
 };
 </script>
