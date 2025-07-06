@@ -14,6 +14,7 @@ import { SeaTide } from './modules/sea_tide/sea_tide.entity';
 import { FishMissionModule } from './modules/fish_mission/fish_mission.module';
 import { FishKindModule } from './modules/fish_kind/fish_kind.module';
 import { LocationModule } from './modules/location/location.module';
+import { FishMapModule } from './modules/fishMap/fishMap.module';
 // import { TypeOrmModule } from '@nestjs/typeorm'; //type orm 추가
 // import { VisitorCountModule } from './modules/visitor-count/visitor-count.module'; // visitor모듈 생성한거 추가가
 
@@ -44,6 +45,7 @@ import { LocationModule } from './modules/location/location.module';
     FishMissionModule,
     FishKindModule,
     LocationModule,
+    FishMapModule,
     // VisitorCountModule,
   ],
   controllers: [AppController],
