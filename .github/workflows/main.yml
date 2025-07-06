@@ -1,0 +1,29 @@
+name: SFTP Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      # (옵션) 빌드 필요시
+      # - name: Install dependencies
+      #   run: npm install
+      # - name: Build project
+      #   run: npm run build
+
+      - name: SFTP Deploy
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_SERVER }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}   # 또는 key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "./*"
+          target: "/home/ocean-story"

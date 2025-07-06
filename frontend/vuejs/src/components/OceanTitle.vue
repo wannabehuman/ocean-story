@@ -1,5 +1,11 @@
 <template>
   <div class="ocean-container">
+    <img 
+      :src="backgroundImage" 
+      class="background-image-full"
+      alt="배경 이미지"
+      loading="lazy"
+    />
     <div class="background-image"></div>
     <div class="wave-container">
       <div class="wave wave1"></div>
@@ -27,10 +33,55 @@ import gsap from 'gsap';
 
 export default {
   name: 'OceanTitle',
+  data() {
+    return {
+      backgroundImage: '',
+      textColor: '#0455BF',
+      currentHour: new Date().getHours()
+    };
+  },
+  computed: {
+    descriptionColor() {
+      return this.currentHour >= 19 || this.currentHour < 5 ? '#F2D16C' : '#666';
+    }
+  },
   mounted() {
     this.initAnimation();
+    this.setBackgroundByTime();
   },
   methods: {
+    async setBackgroundByTime() {
+      this.currentHour = new Date().getHours();
+      
+      // 이미지 프리로드
+      const preloadImage = (src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+        });
+      };
+
+      // 현재 시간에 맞는 이미지 설정
+      let imagePath = '';
+      if (this.currentHour >= 19 || this.currentHour < 5) {
+        // Evening/Night (7PM to 5AM)
+        imagePath = '/images/night_bg.png';
+        this.textColor = '#F2D16C';
+      } else if (this.currentHour >= 17 && this.currentHour < 19) {
+        // Afternoon (5PM to 7PM)
+        imagePath = '/images/afternoon_bg.png';
+        this.textColor = '#0455BF';
+      } else {
+        // Morning/Day (5AM to 5PM)
+        imagePath = '/images/sunny_bg.png';
+        this.textColor = '#0455BF';
+      }
+
+      // 이미지 로드 후에만 배경 전환
+      await preloadImage(imagePath);
+      this.backgroundImage = imagePath;
+    },
     initAnimation() {
       // 초기 상태 설정
       gsap.set(['.letters', '.line', '.description'], { 
@@ -125,9 +176,27 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, rgba(205, 236, 250, 0.7) 0%, rgba(225, 245, 254, 0.7) 100%);
   overflow: hidden;
   position: relative;
+}
+
+.background-image-full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  will-change: transform;
+  /* 이미지 스케일을 살짝 크게 하여 스크롤 시 여백이 보이지 않도록 함 */
+  transform: scale(1.02);
+  /* 이미지 로딩 중 깜빡임 방지 */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
 }
 
 .background-image {
@@ -172,7 +241,7 @@ export default {
 .wave2 {
   z-index: 2;
   /* opacity: 0.5; */
-  height: 80%;
+  height: 60%;
   background: #6ddcf8;
 
 }
@@ -180,9 +249,9 @@ export default {
 .wave3 {
   z-index: 1;
   /* opacity: 0.3; */
-  height: 100%;
-  background: #a9f6fd;
-
+  /* height: 100%; */
+  /* background: #a9f6fd; */
+  background-image: url('@/../public/images/wthr_wave.png');
 }
 
 @keyframes wave {
@@ -230,8 +299,9 @@ export default {
   display: inline-block;
   font-size: 5.5rem;
   font-weight: bold;
-  color: #0455BF;
+  color: v-bind(textColor);
   opacity: 0;
+  transition: color 0.5s ease;
 }
 
 .letters-left {
@@ -247,7 +317,8 @@ export default {
   font-family: serif;
   font-style: italic;
   transform: scale(0.5);
-  color: #0455BF;
+  color: v-bind(textColor);
+  transition: color 0.5s ease;
 }
 
 .line {
@@ -262,12 +333,13 @@ export default {
 
 .description {
   font-size: 1.5rem;
-  color: #666;
+  color: v-bind(descriptionColor);
   margin: 0;
   transform: translateY(30px);
   opacity: 0;
   font-weight: 300;
   letter-spacing: 0.1em;
+  transition: color 0.5s ease;
 }
 
 @media (max-width: 768px) {

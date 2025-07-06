@@ -44,16 +44,12 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedLocation: 'DT_0056',
+      selectedLocation: 'DT_0063',
       monthData: {},
       year: null,
       month: null,
       isMonthDataLoaded: false,
-      locations: [
-        { value: 'DT_0001', label: '인천' },
-        { value: 'DT_0056', label: '부산항신항' },
-        { value: 'DT_0063', label: '가덕도' }
-      ],
+      locations: [{value: 'DT_0063', label: '가덕도'}],
       currentTitle: '',
       calendarOptions: {
         plugins: [dayGridPlugin],
@@ -103,8 +99,8 @@ export default defineComponent({
                     <div class="tide-label">고</div>
                     <div class="tide-times">
                       ${tideData ? `
-                        <div class="tide-time">${tideData.first_high_tide_time?.slice(0, 5)}(${tideData.first_high_tide})</div>
-                        <div class="tide-time">${tideData.second_high_tide_time?.slice(0, 5)}(${tideData.second_high_tide})</div>
+                        <div class="tide-time">${tideData.first_high_tide_time?.slice(0, 5)??''} ${tideData.first_high_tide ? '(' + tideData.first_high_tide + ')' : '-'}</div>
+                        <div class="tide-time">${tideData.second_high_tide_time?.slice(0, 5)??''} ${tideData.second_high_tide ? '(' + tideData.second_high_tide + ')' : '-'}</div>
                       ` : '<div class="no-data">-</div>'}
                     </div>
                   </div>
@@ -113,8 +109,8 @@ export default defineComponent({
                     <div class="tide-label">저</div>
                     <div class="tide-times">
                       ${tideData ? `
-                        <div class="tide-time">${tideData.first_low_tide_time?.slice(0, 5)}(${tideData.first_low_tide})</div>
-                        <div class="tide-time">${tideData.second_low_tide_time?.slice(0, 5)}(${tideData.second_low_tide})</div>
+                        <div class="tide-time">${tideData.first_low_tide_time?.slice(0, 5)??''} ${tideData.first_low_tide ? '('+ tideData.first_low_tide + ')' : '-'}</div>
+                        <div class="tide-time">${tideData.second_low_tide_time?.slice(0, 5)??''} ${tideData.second_low_tide ? '(' + tideData.second_low_tide + ')' : '-'}</div>
                       ` : '<div class="no-data">-</div>'}
                     </div>
                   </div>
@@ -142,12 +138,27 @@ export default defineComponent({
     // this.findAll();
     this.updateTitle();
     // this.getMonthData();
-    
-    // console.log(this.getMonthData())
-    // console.log(this.selectedLocation);
-    this.fetchTideData(this.year, this.month, this.selectedLocation);
+    this.fetchLocations();  
   },
   methods: {
+    // 위치 데이터 가져오기
+    async fetchLocations() {
+      try {
+          const response = await fetch(`${process.env.VUE_APP_API_URL}/api/location`, {
+            credentials: 'include', // 이 옵션 추가
+          });
+          const data = await response.json();
+          this.locations = data.map(location => ({
+            value: location.code,
+            label: location.name
+          }));
+          this.selectedLocation = this.locations[0].value;
+          this.handleLocationChange();
+          console.log('전체 데이터:', data);
+      } catch (error) {
+          console.error('데이터 조회 실패:', error);
+      }
+    },
     async findAll(){
       try {
           const response = await fetch(`${process.env.VUE_APP_API_URL}/api/sea-tides`, {

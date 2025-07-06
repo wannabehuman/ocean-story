@@ -1,0 +1,26 @@
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px; /* 세로 스크롤바 너비 */
+  height: 8px; /* 가로 스크롤바 높이 */
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* 트랙 색상 */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999; /* 손잡이 색상 */
+  border-radius: 10px;
+  border: 2px solid #f0f0f0; /* 안쪽 테두리로 마진 느낌 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666; /* 마우스 오버 시 */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin; /* auto | thin | none */
+  scrollbar-color: #999 #f0f0f0; /* thumb 색상, track 색상 */
+}

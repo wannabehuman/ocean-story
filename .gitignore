@@ -24,3 +24,8 @@ yarn-error.log*
 # 빌드 결과물
 dist/
 build/ 
+
+
+# 
+nginx/nginx.conf
+

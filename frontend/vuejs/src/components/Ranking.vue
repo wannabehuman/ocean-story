@@ -38,12 +38,12 @@ export default {
     };
   },
   mounted() {
-    this.initAnimation();
+
     this.loadGridLibrary();
-    // 10초마다 랭킹 데이터 새로고침
+    // 5초마다 랭킹 데이터 새로고침
     this.refreshInterval = setInterval(() => {
       this.fetchRankingData();
-    }, 10000);
+    }, 5000);
   },
   beforeUnmount() {
     // 컴포넌트 제거 시 인터벌 정리
@@ -210,6 +210,8 @@ export default {
           if (this.grid) {
             // 이미 그리드가 초기화된 경우 데이터만 업데이트
             this.grid.resetData(this.rankings);
+            // 데이터 업데이트 후 정렬 상태 유지
+            this.grid.sort('time_calc', true);
           } else {
             // 첫 로드 시 그리드 초기화
             this.initGrid();
@@ -227,6 +229,8 @@ export default {
           ].slice(0, 15);
           if (this.grid) {
             this.grid.resetData(this.rankings);
+            // 데이터 업데이트 후 정렬 상태 유지
+            this.grid.sort('time_calc', true);
           } else {
             this.initGrid();
           }
