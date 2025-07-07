@@ -22,7 +22,22 @@
     margin: 0;
   }
 
-
+  .field-box-inner {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100px; /* 세로 높이는 고정 */
+    padding: 10px;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .wthr-line {
+    flex-shrink: 0;
+  
+  }
   
   /* WEATHER DETAIL CONTAINER */
   .dwthr-cont {
@@ -138,7 +153,7 @@
 
         /* WEATEHR LINE */
         .wthr-line {
-          width: 100%;
+          /* width: 100%; */
           height: 100%;
           min-width: 90px;
           display: flex;
@@ -146,9 +161,9 @@
           border-radius: 5px;
           box-sizing: border-box;
 
-          &:first-child {
+          /* &:first-child {
             background-color: #ffffff73;
-          }
+          } */
         }
 
 
@@ -164,7 +179,10 @@
             color: #045A9B;
           }
         }
-
+        .wthr-color{
+          background-color: #ffffff73;
+          border-radius: 5px;
+        }
 
       }
 
@@ -174,4 +192,28 @@
 
   }
 
+}
+.date-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff73;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.date-btn:hover {
+  background-color: #ffffff90;
+}
+
+.date-btn.prev {
+  transform: rotate(180deg);
 }

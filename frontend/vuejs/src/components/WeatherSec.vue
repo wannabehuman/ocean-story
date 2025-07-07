@@ -110,6 +110,24 @@
 import '@/assets/css/weatherSec.css'
 export default {
   name: 'WeatherComponent',
+  props: {
+    location: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  watch: {
+    location: {
+      immediate: true,
+      handler(newLocation) {
+        if (newLocation && newLocation.value) {
+          console.log('WeatherSec - Location updated:', newLocation);
+          // 여기에 날씨 정보를 가져오는 로직 추가
+          this.callOepnMetheo(newLocation);
+        }
+      }
+    }
+  },
   data() {
     return {
       curnt_wthr: '',       // 오늘 날씨 정보
@@ -126,8 +144,9 @@ export default {
     getCurrentLocation() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          this.callOepnMetheo(position.coords.latitude, position.coords.longitude);
-          this.getLocationName(position.coords.latitude, position.coords.longitude);
+          console.log(position);
+          // this.callOepnMetheo(position.coords.latitude, position.coords.longitude);
+          // this.getLocationName(position.coords.latitude, position.coords.longitude);
         },
         (error) => {
           console.error("위치 정보 오류:", error);
@@ -137,19 +156,20 @@ export default {
     
 
     // openMeeo 호출해보기
-    callOepnMetheo(latitude, longitude) {
-      let loca = latitude  || 35.1796;  // param 없을 시 부산 경도
-      let long = longitude || 129.0756; // param 없을 시 부산 위도
+    callOepnMetheo(locationCode) {
+      console.log(locationCode);
+      let loca = locationCode.latitude  || 35.1796;  // param 없을 시 부산 경도
+      let long = locationCode.longitude || 129.0756; // param 없을 시 부산 위도
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${loca}&longitude=${long}&current=temperature_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,&timezone=Asia%2FSeoul`;
-      
+      // console.log(url);
       fetch(url)
         .then(res => res.json())
         .then(data => {
           // data return
-          this.curnt_wthr = data.current;            // 
-          this.curnt_wthr_unit = data.current_units; //
-          this.wthr_code = data.current.weather_code;
-          this.formatWeatherTime(data.current.time); // 여기에서 시간 포맷 호출
+          this.curnt_wthr = data.current;            // 현재 날씨 정보
+          this.curnt_wthr_unit = data.current_units; // 현재 날씨 정보에 해당하는 단위
+          this.wthr_code = data.current.weather_code; // 현재 날씨 코드
+          // this.formatWeatherTime(data.current.time); // 여기에서 시간 포맷 호출
           this.setWeatherIcon(this.wthr_code);
         })
         .catch(err => {
@@ -262,8 +282,8 @@ export default {
   },
   mounted() {
     // 컴포넌트가 마운트 되면 위치 정보를 가져오는 메소드 실행
-    this.getCurrentLocation();
-    this.getLocationName(35.1796, 129.0756);
+    // this.getCurrentLocation();
+    // this.getLocationName(35.1796, 129.0756);
   }
 }; // export end
 </script>

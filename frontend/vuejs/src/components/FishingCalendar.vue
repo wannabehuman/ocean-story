@@ -7,7 +7,7 @@
           <select v-model="selectedLocation" @change="handleLocationChange" class="location-select">
             <option v-for="location in locations" 
             :key="location.value" 
-            :value="location.value">
+            :value="location">
             {{ location.label }}
             </option>
           </select>
@@ -42,9 +42,10 @@ export default defineComponent({
   components: {
     FullCalendar
   },
+  emits: ['locationChange'],
   data() {
     return {
-      selectedLocation: 'DT_0063',
+      selectedLocation: {},
       monthData: {},
       year: null,
       month: null,
@@ -136,9 +137,10 @@ export default defineComponent({
     // const day = String(today.getDate()).padStart(2, '0');
     // const formattedDate = `${year}${month}${day}`;
     // this.findAll();
+    this.fetchLocations();  
+    this.selectedLocation = this.locations[0];
     this.updateTitle();
     // this.getMonthData();
-    this.fetchLocations();  
   },
   methods: {
     // 위치 데이터 가져오기
@@ -150,33 +152,34 @@ export default defineComponent({
           const data = await response.json();
           this.locations = data.map(location => ({
             value: location.code,
-            label: location.name
+            label: location.name,
+            longitude: location.longitude,
+            latitude: location.latitude
           }));
-          this.selectedLocation = this.locations[0].value;
+          this.selectedLocation = this.locations[0];
           this.handleLocationChange();
-          console.log('전체 데이터:', data);
       } catch (error) {
           console.error('데이터 조회 실패:', error);
       }
     },
     async findAll(){
-      try {
-          const response = await fetch(`${process.env.VUE_APP_API_URL}/api/sea-tides`, {
-            credentials: 'include', // 이 옵션 추가
-          });
-          const data = await response.json();
-          console.log('전체 데이터:', data);
-      } catch (error) {
-          console.error('데이터 조회 실패:', error);
-      }
+      // try {
+      //     const response = await fetch(`${process.env.VUE_APP_API_URL}/api/sea-tides`, {
+      //       credentials: 'include', // 이 옵션 추가
+      //     });
+      //     // const data = await response.json();
+      //     // console.log('전체 데이터:', data);
+      // } catch (error) {
+      //     console.error('데이터 조회 실패:', error);
+      // }
     },
     async fetchTideData(year, month, location) {
-      console.log(process.env.VUE_APP_API_URL);
+      // console.log(process.env.VUE_APP_API_URL);
       try {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/api/sea-tides/${year}/${month}/${location}`);
         const data = await response.json();
         this.tideData = data; // 받아온 데이터 저장
-        console.log(this.tideData)
+        // console.log(this.tideData)
         // 달력 다시 렌더링
         this.$refs.calendar.getApi().render();
       } catch (error) {
@@ -296,8 +299,8 @@ export default defineComponent({
       }, 1000);
     },
     handleLocationChange() {
+
       this.updateTitle();
-      console.log('Selected location:', this.selectedLocation);
     },
     prevMonth() {
       const calendarApi = this.$refs.calendar.getApi();
@@ -333,10 +336,10 @@ export default defineComponent({
       this.year = currentDate.getFullYear();
       this.month = currentDate.getMonth() + 1; // 0-11이므로 +1 필요
       
-      console.log(`${this.year}년 ${this.month}월 데이터 조회`);
-      
       // 해당 년월의 데이터 조회
-      this.fetchTideData(this.year, this.month, this.selectedLocation);
+      this.fetchTideData(this.year, this.month, this.selectedLocation.value);
+
+      this.$emit('locationChange', this.selectedLocation);
     },
     async getMonthData(){
       const calendarApi = this.$refs.calendar.getApi();

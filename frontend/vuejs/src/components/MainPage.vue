@@ -1,9 +1,9 @@
 <template>
   <OceanTitle />
+  <FishingCalendar @locationChange="updateTitle" />
+  <WeatherSec :location="currentLocation"/>
+  <WeatherDetailSec :location="currentLocation"/>
   <FishMap/>
-  <FishingCalendar />
-  <WeatherSec />
-  <WeatherDetailSec />
   <!-- <Ranking /> -->
   <!-- <NickNameReg /> -->
   <!-- <FishMission /> -->
@@ -20,7 +20,7 @@ import WeatherDetailSec from './WeatherDetailSec.vue';
 import FishMap          from './FishMap.vue';
 
 // import NickNameReg from './NicknameReg.vue';
-
+// import { ref } from 'vue';
 export default {
   name: 'MainPage',
   components: {
@@ -32,6 +32,19 @@ export default {
     FishingCalendar,
     FishMap,
     // NickNameReg
+  },
+  data() {
+    return {
+      currentLocation: {},
+    };
+  },
+  methods: {
+    updateTitle(selectedLocation) {
+      this.currentLocation = selectedLocation;
+      // console.log('Selected location:', this.currentLocation);
+      // this.$refs.weatherSec.updateTitle();
+      // this.$refs.weatherDetailSec.updateTitle();
+    }
   }
 }
 </script>

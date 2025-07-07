@@ -19,7 +19,8 @@ export class Location {
         length: 255,
         comment: '위치 이름',
     })
-    name: string;
+    name: string;   
+    
     @Column({
         type: 'decimal',
         name: 'latitude',
