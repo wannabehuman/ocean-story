@@ -1,5 +1,5 @@
 <template>
-  <div class="background-color">
+  <div class="wrap cal-wrap">
     <div class="calendar-container">
       <div class="fc-toolbar">
         <div>
@@ -467,7 +467,7 @@ export default defineComponent({
     padding: 14px !important;  /* 패딩을 14px로 설정 */
 
     min-height: 88px !important;
-    max-height: 88px !important;
+    /* max-height: 88px !important; */
     box-sizing: border-box !important;
 }
 
@@ -521,6 +521,7 @@ export default defineComponent({
 
 /* 조석 정보 컨테이너 */
 .tide-container {
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
@@ -541,10 +542,12 @@ export default defineComponent({
 /* 고조/저조 섹션 */
 .high-tide-section,
 .low-tide-section {
+    height: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 /* 조석 레이블 스타일 */
@@ -584,18 +587,31 @@ export default defineComponent({
 
 /* FullCalendar 기본 스타일 오버라이드 */
 .fc .fc-daygrid-day-frame {
+  height: 100%;
   padding: 4px !important;
   min-height: 100px !important;
 }
 
 .fc .fc-daygrid-day-top {
+  height: 100%;
   display: block !important;
 }
 
+.fc .fc-daygrid-day-top .day-cell {
+  height: 100%;
+}
+
 .fc .fc-daygrid-day-number {
+  height: 100%;
   float: none !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+
+.fc .fc-daygrid-day-number .day-cell {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
@@ -649,6 +665,7 @@ export default defineComponent({
     align-items: center !important;
     padding: 10px !important;
     background-color: #9de5fb !important;
+    position: relative;
 }
 
 /* 왼쪽 영역 (select box) */
@@ -671,6 +688,10 @@ export default defineComponent({
     border-radius: 4px !important;
     border: 1px solid #ccc !important;
     font-family: 'HakgyoansimDunggeunmiso', sans-serif !important;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
 }
 
 /* 네비게이션 버튼 스타일 */

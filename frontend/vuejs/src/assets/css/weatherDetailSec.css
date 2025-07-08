@@ -5,11 +5,12 @@
 
 .wrap.weather-detail-wrap {
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #0bbff5;
+  padding: 50px 0;
 
   ul, li {
     list-style: none;
@@ -93,7 +94,9 @@
 
 
         /* INFO HEADER */
-        /* .dwthr-info-header {} */
+        .dwthr-info-header {
+          width: 100%;
+        }
 
         /* INFO BODY */
         /* .dwthr-info-body {} */
@@ -194,7 +197,9 @@
 
 }
 .date-controls {
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
 }
@@ -212,8 +217,4 @@
 
 .date-btn:hover {
   background-color: #ffffff90;
-}
-
-.date-btn.prev {
-  transform: rotate(180deg);
 }
