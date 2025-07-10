@@ -23,11 +23,11 @@
         <!-- 정보 영역 -->
         <div class="info-section">
           <!-- 지역 선택 버튼 -->
-          <div class="region-buttons">
+          <!-- <div class="region-buttons">
             <button v-for="(region, index) in regions" :key="index" @click ="RegionClick(region)" class="region-button">
               {{ region }}
             </button>
-          </div>
+          </div> -->
         
         <div class="Fish-section">
           <!-- 낚시 가능/불가능 아이콘 -->

@@ -1,17 +1,18 @@
 .wrap.cal-wrap {
     width: 100%;
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #0bbff5;
+    padding: 100px 0;
 }
 
 .calendar-container {
-    width: 100%;
+    width: 82%;
     padding: 20px;
     /* max-width: 1200px; */
-    max-width: 82%;
+    max-width: 1574px;
   }
   
   .fc-toolbar {

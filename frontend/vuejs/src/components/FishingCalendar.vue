@@ -442,8 +442,8 @@ export default defineComponent({
   padding: 0px;
   border-radius: 10px;
   width: 100% !important;  /* 또는 특정 픽셀값 예: 1200px */
-  max-width: 1400px !important;  /* 최대 너비 설정 */
-  margin: 0 auto !important;
+  
+  /* margin: 0 auto !important; */
 }
 
 /* 날짜 그리드 테이블 구조 수정 */

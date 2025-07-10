@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   background-color: #0bbff5;
-  padding: 50px 0;
+  padding: 100px 0;
 
   ul, li {
     list-style: none;
@@ -47,6 +47,7 @@
     max-width: 1574px;
     padding: 35px 22px 60px;
     border-radius: 10px;
+    box-sizing: border-box;
 
 
     /* DEATIL TITLE */
