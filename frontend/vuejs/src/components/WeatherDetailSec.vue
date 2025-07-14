@@ -29,9 +29,9 @@
           <!-- INFO HEADER -->
           <div class="dwthr-info-header">
             <div class="date-controls">
-              <button @click="prevDate" class="date-btn prev">←</button>
+              <button @click="prevDate" class="date-btn prev">◀</button>
               <p class="day">{{ selectedDate ? selectedDate.split('-').join('.') : '' }}</p>
-              <button @click="nextDate" class="date-btn next">→</button>
+              <button @click="nextDate" class="date-btn next">▶</button>
             </div>
             <!-- <p class="date">{{ selectedDate ? selectedDate.split('-').join('.') : '' }}</p> -->
           </div>

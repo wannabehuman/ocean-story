@@ -92,6 +92,7 @@
         font-size: 1.25rem;
         line-height: 2;
         text-align: left;
+        box-sizing: border-box;
 
 
         /* INFO HEADER */
@@ -219,3 +220,71 @@
 .date-btn:hover {
   background-color: #ffffff90;
 }
+
+
+
+/* 반응형 ( ~ 1000px) */
+@media all and (max-width: 1000px) {
+  .wrap.weather-detail-wrap {
+    & .dwthr-cont {
+
+      /* DETAIL BOX */
+      & .dwther-box {
+        flex-direction: column;
+
+        /* DETAIL WEATHER INFO BOX */
+        .dwthr-info-box {
+          width: 100%;
+        }
+
+
+        /* WEATEHR FIELD */
+        .dwthr-field {
+          width: 100%;
+          flex-direction: column;
+          overflow: auto;
+
+
+          /* FIELD TITLE */
+          .dwthr-field-tit {
+            display: flex;
+            width: fit-content;
+          }
+
+
+          /* FIELD BOX */
+          .dwthr-field-box {
+            width: fit-content;
+            overflow: visible;
+            margin: unset;
+          }
+
+
+          /* INNER */
+          .field-box-inner {
+            flex-direction: column;
+            padding: unset;
+            padding-bottom: 10px;
+          }
+          
+
+          .wthr-line {
+            flex-direction: row;
+          }
+
+          .wthr-line-item {
+            padding: 18px 0;
+            min-width: 85px;
+          } 
+
+        }
+        /* WEATEHR FIELD // */
+
+      }
+      /* DETAIL BOX // */
+
+
+    }
+  }
+}
+/* 반응형 ( ~ 1000px) // */

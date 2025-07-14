@@ -83,10 +83,10 @@
       justify-content: center;
     }
     
-    .location-select {
+    /* .location-select {
       width: 100%;
       margin-left: 0;
-    }
+    } */
   }
   
   .tide-cell {

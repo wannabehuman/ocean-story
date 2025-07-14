@@ -415,13 +415,13 @@ export default defineComponent({
 .tide-label,
 .tide-time,
 .tide-level {
-    font-family: 'HakgyoansimDunggeunmiso', sans-serif !important;
+    font-family: 'HakgyoansimDunggeunmisoTTF-B', sans-serif !important;
     font-weight: 400 !important;
 }
 
 /* 전체 캘린더에 폰트 적용 */
 .fc {
-    font-family: 'HakgyoansimDunggeunmiso', sans-serif !important;
+    font-family: 'HakgyoansimDunggeunmisoTTF-B', sans-serif !important;
     font-weight: 400 !important;
 }
 
@@ -432,7 +432,7 @@ export default defineComponent({
 
 /* 캘린더 전체에 폰트 적용 */
 .fc {
-    font-family: 'HakgyoansimDunggeunmiso', sans-serif !important;
+    font-family: 'HakgyoansimDunggeunmisoTTF-B', sans-serif !important;
 }
 
 /* 전체 캘린더 컨테이너 */
@@ -572,12 +572,14 @@ export default defineComponent({
 .tide-times {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
   font-size: 0.85em;
 }
 
 .tide-time {
   color: #333;
+  text-align: center;
 }
 
 .tide-level {
@@ -687,7 +689,7 @@ export default defineComponent({
     padding: 8px !important;
     border-radius: 4px !important;
     border: 1px solid #ccc !important;
-    font-family: 'HakgyoansimDunggeunmiso', sans-serif !important;
+    font-family: 'HakgyoansimDunggeunmisoTTF-B', sans-serif !important;
     position: absolute;
     top: 50%;
     left: 0;
