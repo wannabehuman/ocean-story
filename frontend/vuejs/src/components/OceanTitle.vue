@@ -247,10 +247,14 @@ export default {
 }
 
 .wave3 {
+  width: 101%;
   z-index: 1;
   /* opacity: 0.3; */
   /* height: 100%; */
   /* background: #a9f6fd; */
+  background-repeat: round;
+  background-position: top;
+  background-size: contain;
   background-image: url('@/../public/images/wthr_wave.png');
 }
 

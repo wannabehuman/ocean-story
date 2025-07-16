@@ -79,8 +79,8 @@
 
       /* DETAIL WEATHER INFO BOX  */
       .dwthr-info-box {
-        width: 214px;
-        height: 335px;
+        /* width: 214px;
+        height: 335px; */
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -151,6 +151,7 @@
           height: 100%;
           display: flex;
           gap: 10px;
+          padding: 0;
           padding-bottom: 10px;
           box-sizing: border-box;
         }
@@ -165,6 +166,7 @@
           flex-direction: column;
           border-radius: 5px;
           box-sizing: border-box;
+          cursor: pointer;
 
           /* &:first-child {
             background-color: #ffffff73;
@@ -183,6 +185,11 @@
           &:first-child {
             color: #045A9B;
           }
+
+          .loti-icon {
+            width: 60px;
+          }
+
         }
         .wthr-color{
           background-color: #ffffff73;

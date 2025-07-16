@@ -40,19 +40,77 @@
 
           <!-- INFO BODY -->
           <div class="dwthr-info-body">
-            <!-- <img src="" alt="/dddd"> -->
-             <p>위에 똑같은 데이터 들어가야하나? 그러면 헷갈리지 않을까?</p>
+            
+
+            <!-- 시간 -->
+            <p class="dwthr-info-time"></p>
+
+
+            <!-- 날씨 아이콘 -->
+            <img class="dwthr-info-icon" src="" alt="">
+
+
+            <!-- 상세 정보 콘텐츠 -->
+            <div class="dwthr-info-cont">
+
+              <!-- 강수.풍속.수온 / 파고?? -->
+
+              <!-- 강수 -->
+              <div class="box">
+                
+                <p class="box-tit">강수</p>
+                
+                <p class="box-info"></p>
+                
+              </div>
+              <!-- 강수 // -->
+
+              <!-- 풍속 -->
+              <div class="box">
+                
+                <p class="box-tit">풍속</p>
+                
+                <p class="box-info"></p>
+                
+              </div>
+              <!-- 풍속 // -->
+
+              <!-- 수온 -->
+              <div class="box">
+                
+                <p class="box-tit">수온</p>
+                
+                <p class="box-info"></p>
+                
+              </div>
+              <!-- 수온 // -->
+
+              <!-- 파고 -->
+              <div class="box">
+                
+                <p class="box-tit">파고</p>
+                
+                <p class="box-info"></p>
+                
+              </div>
+              <!-- 파고 // -->
+              
+
+            </div>
+            <!-- 상세 정보 콘텐츠 // -->
+
+
           </div>
           <!-- INFO BODY // -->
 
 
           <!-- INFO FOOTER -->
-          <div class="dwthr-info-footer">
+          <!-- <div class="dwthr-info-footer">
 
             <p class="wthr">알아서 해주세용</p>
             <p class="temp">ㅋㅋㅋㅋ</p>
 
-          </div>
+          </div> -->
           <!-- INFO FOOTER // -->
 
 
@@ -93,11 +151,21 @@
               <ul v-for="(item, index) in weatherData[selectedDate]" :key="index" class="wthr-line" :class="{ 'wthr-color': index === currentHour }">
 
                 <li class="wthr-line-item">{{ item.time }}</li>
-                <li class="wthr-line-item"><img src="" alt=""></li>
+                <li class="wthr-line-item">
+                  <dotlottie-player
+                    :key="item.weathercode"
+                    :src="setWeatherIcon(item.weathercode)"
+                    class="loti-icon"
+                    speed="1"
+                    loop
+                    autoplay
+                  ></dotlottie-player>
+                </li>
+                <!-- <li class="wthr-line-item">{{ item.weathercode  }}</li> -->
                 <li class="wthr-line-item">{{ item.temperature }}</li>
                 <li class="wthr-line-item">{{ item.winddirection_10m}}</li>
                 <li class="wthr-line-item">{{ item.sea_surface_temperature }}</li>
-                <li class="wthr-line-item">{{ item.weathercode }}</li>
+                <li class="wthr-line-item">{{ item.precipitation }}</li>
                 <li class="wthr-line-item">{{ item.windspeed }}</li>
                 <li class="wthr-line-item">{{ item.windgusts_10m }}</li>
                 <li class="wthr-line-item">{{ item.wave_height }}</li>
@@ -181,6 +249,38 @@
         this.scrollToCurrentTime();
       }
     },
+    // 날씨 코드에 맞는 아이콘을 설정하는 메서드
+    setWeatherIcon(code) {
+      switch(code) {
+        case 0: 
+        return "https://lottie.host/993e642c-c6f5-4cff-a25f-11f50b5eddc1/BhGxSqL2bY.lottie"; 
+        case 1:
+        case 2:
+        case 3:
+        case 61:
+          return 'https://lottie.host/2e801757-9b51-4d04-b421-3754992f5654/IQBh2ejW8M.lottie'; 
+        case 45:
+        case 48:
+          return 'https://lottie.host/da12ca2c-d463-46f5-a64d-a180d61b9658/BasV12D50J.lottie'; 
+        case 51:
+        case 53:
+        case 55:
+          return 'https://lottie.host/5fff8212-d78c-4a15-8579-592a48b23638/hMYCRNGaJp.lottie'; 
+        case 71:
+        case 73:
+        case 75:
+        case 77:
+        case 85:
+        case 86:
+          return 'https://lottie.host/470698ac-aa51-4352-9d77-1e2b2a3a0761/VANWuWqSyp.lottie';
+        case 95:
+        case 96:
+        case 99:
+          return 'https://lottie.host/75ec1860-7160-4b52-b7b1-89f46608d64b/Kh53WFPTAW.lottie';
+        default:
+          return ''; // 기본 아이콘
+      }
+    },
     async scrollToCurrentTime() {
       // 현재 시간의 시간 부분을 가져옴
       const now = new Date();
@@ -243,6 +343,9 @@
       sea_surface_temperature: marineData?.hourly?.sea_surface_temperature || [],
       wave_height: marineData?.hourly?.wave_height || []
     };
+
+    console.log('hourlyData')
+    console.log(hourlyData)
     
     // 날짜별로 그룹화
     const groupedData = {};
