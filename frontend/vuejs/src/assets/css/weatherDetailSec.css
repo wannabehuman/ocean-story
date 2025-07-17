@@ -84,7 +84,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 30px;
+        gap: 10px;
         border-radius: 5px;
         background-color: #FFFFFFBA;
         padding: 30px;
@@ -101,7 +101,42 @@
         }
 
         /* INFO BODY */
-        /* .dwthr-info-body {} */
+        .dwthr-info-body {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          /* 시간 */
+          .dwthr-info-time {
+            text-align: center;
+            font-size: 1.75rem;
+          }
+
+
+          /* 날씨 아이콘 */
+          .dwthr-info-icon {
+            width: 100%;
+            height: 190px;
+          }
+
+
+          .dwthr-info-cont {
+            width: 100%;
+          }
+
+          /* BOX */
+          .box {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+
+            .box-tit  { flex: 1; text-align: center; }
+            .box-info { flex: 1; }
+          }
+
+        }
 
         /* INFO FOOTER */
         /* .dwthr-info-footer {} */

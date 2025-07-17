@@ -181,7 +181,6 @@ export default {
     // 날씨 코드에 맞는 아이콘을 설정하는 메서드
     setWeatherIcon(code) {
       // 날씨 코드에 따른 애니메이션 아이콘 URL을 지정
-      console.log(code)
       switch(code) {
         // SUNNY
         case 0: 
@@ -202,6 +201,12 @@ export default {
         case 51:
         case 53:
         case 55:
+        case 65:
+          // this.weatherIconSrc = 'https://lottie.host/5fff8212-d78c-4a15-8579-592a48b23638/hMYCRNGaJp.lottie'; 
+          this.weatherIconSrc = 'https://lottie.host/75ec1860-7160-4b52-b7b1-89f46608d64b/Kh53WFPTAW.lottie'; 
+          break;
+        case 61:
+        case 63:
           this.weatherIconSrc = 'https://lottie.host/5fff8212-d78c-4a15-8579-592a48b23638/hMYCRNGaJp.lottie'; 
           break;
         // SNOWY
