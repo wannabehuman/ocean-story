@@ -8,6 +8,7 @@
   <!-- <NickNameReg /> -->
   <!-- <FishMission /> -->
   <CrewInfo />
+  <ChatBot />
 </template>
 
 <script>
@@ -18,6 +19,7 @@ import FishingCalendar  from './FishingCalendar.vue';
 import WeatherSec       from './WeatherSec.vue';
 import WeatherDetailSec from './WeatherDetailSec.vue';
 import FishMap          from './FishMap.vue';
+import ChatBot          from './ChatBot.vue';
 
 // import NickNameReg from './NicknameReg.vue';
 // import { ref } from 'vue';
@@ -31,6 +33,7 @@ export default {
     // Ranking,
     FishingCalendar,
     FishMap,
+    ChatBot,
     // NickNameReg
   },
   data() {
