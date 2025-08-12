@@ -8,7 +8,7 @@
   <!-- <NickNameReg /> -->
   <!-- <FishMission /> -->
   <CrewInfo />
-  <ChatBot />
+  <ChatBot :location="currentLocation" />
 </template>
 
 <script>

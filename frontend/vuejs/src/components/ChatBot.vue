@@ -4,14 +4,15 @@
       v-if="!isOpen" 
       class="chatbot-icon" 
       @click="toggleChat"
+      @mouseenter="onHover"
+      @mouseleave="onHoverOut"
       title="AI 챗봇"
+      ref="chatIcon"
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 12h8m-8 4h6m2-10V4a2 2 0 00-2-2H4a2 2 0 00-2 2v12c0 1.1.9 2 2 2h14l4 4V8a2 2 0 00-2-2h-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+     <img src="@/assets/chat_icon02.png" width="60" height="60" alt="AI 챗봇 아이콘" ref="fishIcon" />
     </div>
 
-    <div v-if="isOpen" class="chat-window">
+    <div v-if="isOpen" class="chat-window" ref="chatWindow">
       <div class="chat-header">
         <h3>AI 챗봇</h3>
         <button @click="toggleChat" class="close-btn">&times;</button>
@@ -75,10 +76,17 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import { gsap } from 'gsap';
 
 export default {
   name: 'ChatBot',
+  props: {
+    location: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
       isOpen: false,
@@ -93,14 +101,9 @@ export default {
   mounted() {
     this.loadApiKey()
     this.loadMessages()
+    this.initFishAnimation()
   },
   methods: {
-    toggleChat() {
-      this.isOpen = !this.isOpen
-      if (this.isOpen && this.messages.length === 0 && this.apiKey) {
-        this.addWelcomeMessage()
-      }
-    },
     saveApiKey() {
       if (this.tempApiKey.trim()) {
         this.apiKey = this.tempApiKey.trim()
@@ -134,6 +137,9 @@ export default {
       this.isLoading = true
 
       try {
+        // 메시지 전송 시 물고기 반짝임 효과
+        this.flashFishIcon()
+        
         const response = await this.callOpenAI(userMessage)
         this.addMessage(response, 'ai')
       } catch (error) {
@@ -145,12 +151,14 @@ export default {
     },
     async callOpenAI(message) {
       try {
+        const systemMessage = await this.getFishingRecommendationContext(message);
+        console.log(systemMessage)
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
           model: 'gpt-3.5-turbo',
           messages: [
             {
               role: 'system',
-              content: '당신은 도움이 되는 AI 어시스턴트입니다. 간결하고 친근하게 답변해주세요. 낚시 관련 질문에 대해 답변해주세요.'
+              content: systemMessage
             },
             {
               role: 'user',
@@ -215,6 +223,469 @@ export default {
       if (container) {
         container.scrollTop = container.scrollHeight
       }
+    },
+    async getFishingRecommendationContext(message) {
+      const isFishingRelated = this.checkIfFishingRelated(message);
+      
+      if (isFishingRelated) {
+        const targetDate = this.extractDateFromMessage(message);
+        const dateInfo = this.getDateInfo(targetDate);
+        const weatherData = await this.getWeatherDataForDate(targetDate);
+        const tideData = await this.getTideDataForDate(targetDate);
+        
+        const locationName = this.location?.label || '부산';
+        
+        return `당신은 낚시 전문가 AI 어시스턴트입니다. ${locationName} 지역의 ${dateInfo.displayText} 날씨와 조류 정보를 바탕으로 낚시 추천을 제공해주세요.
+
+📍 지역: ${locationName}
+📅 날짜: ${dateInfo.displayText}
+
+🌤️ 날씨 정보:
+- 기온: ${weatherData.temperature}°C
+- 풍속: ${weatherData.windSpeed}m/s
+- 풍향: ${weatherData.windDirection}°
+- 강수량: ${weatherData.precipitation}mm
+- 수온: ${weatherData.seaTemperature}°C
+- 파고: ${weatherData.waveHeight}m
+
+🌊 조류 정보:
+- 만조 시간: ${tideData.highTide}
+- 간조 시간: ${tideData.lowTide}
+
+낚시 추천 기준:
+1. 좋은 조건:
+   - 풍속 3-7m/s (적당한 바람)
+   - 수온 15-25°C
+   - 강수량 0-5mm
+   - 파고 1m 이하
+   - 만조/간조 전후 1-2시간
+
+2. 나쁜 조건:
+   - 풍속 10m/s 이상 (강풍)
+   - 강수량 10mm 이상
+   - 파고 2m 이상
+
+위 정보를 바탕으로 ${dateInfo.displayText} 낚시에 대한 친근하고 상세한 추천을 제공해주세요.`;
+      } else {
+        return '당신은 도움이 되는 AI 어시스턴트입니다. 간결하고 친근하게 답변해주세요. 낚시 관련 질문에 대해 답변해주세요.';
+      }
+    },
+    checkIfFishingRelated(message) {
+      const fishingKeywords = ['낚시', '바다', '고기', '물고기', '낚다', '추천', '조황', '언제', '좋은지', '날씨', '바람', '조류'];
+      return fishingKeywords.some(keyword => message.includes(keyword));
+    },
+    extractDateFromMessage(message) {
+      const today = new Date();
+      
+      // 오늘, 지금, 현재
+      if (message.includes('오늘') || message.includes('지금') || message.includes('현재')) {
+        return today;
+      }
+      
+      // 내일
+      if (message.includes('내일')) {
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        return tomorrow;
+      }
+      
+      // 모레
+      if (message.includes('모레')) {
+        const dayAfterTomorrow = new Date(today);
+        dayAfterTomorrow.setDate(today.getDate() + 2);
+        return dayAfterTomorrow;
+      }
+      
+      // n일 후 패턴 (예: 3일 후, 일주일 후)
+      const daysAfterMatch = message.match(/(\d+)일?\s*후/);
+      if (daysAfterMatch) {
+        const daysToAdd = parseInt(daysAfterMatch[1]);
+        const futureDate = new Date(today);
+        futureDate.setDate(today.getDate() + daysToAdd);
+        return futureDate;
+      }
+      
+      // 일주일 후, 1주일 후
+      if (message.includes('일주일') || message.includes('1주일')) {
+        const oneWeekLater = new Date(today);
+        oneWeekLater.setDate(today.getDate() + 7);
+        return oneWeekLater;
+      }
+      
+      // 특정 날짜 패턴 (YYYY-MM-DD, MM-DD, MM/DD 등)
+      const datePatterns = [
+        /(\d{4})-(\d{1,2})-(\d{1,2})/,  // 2024-08-15
+        /(\d{1,2})-(\d{1,2})/,          // 08-15 (올해)
+        /(\d{1,2})\/(\d{1,2})/,         // 8/15 (올해)
+        /(\d{1,2})월\s*(\d{1,2})일?/     // 8월 15일
+      ];
+      
+      for (const pattern of datePatterns) {
+        const match = message.match(pattern);
+        if (match) {
+          let year, month, day;
+          
+          if (pattern.source.includes('\\d{4}')) {
+            // YYYY-MM-DD 형식
+            year = parseInt(match[1]);
+            month = parseInt(match[2]) - 1; // Date는 0부터 시작
+            day = parseInt(match[3]);
+          } else if (pattern.source.includes('월')) {
+            // N월 N일 형식
+            year = today.getFullYear();
+            month = parseInt(match[1]) - 1;
+            day = parseInt(match[2]);
+          } else {
+            // MM-DD, MM/DD 형식
+            year = today.getFullYear();
+            month = parseInt(match[1]) - 1;
+            day = parseInt(match[2]);
+          }
+          
+          const targetDate = new Date(year, month, day);
+          // 과거 날짜인 경우 내년으로 설정
+          if (targetDate < today) {
+            targetDate.setFullYear(year + 1);
+          }
+          return targetDate;
+        }
+      }
+      
+      // 기본값: 오늘
+      return today;
+    },
+    getDateInfo(date) {
+      const today = new Date();
+      const diffTime = date.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      const options = { month: 'long', day: 'numeric', weekday: 'long' };
+      const formatDate = date.toLocaleDateString('ko-KR', options);
+      
+      let displayText;
+      if (diffDays === 0) {
+        displayText = '오늘';
+      } else if (diffDays === 1) {
+        displayText = '내일';
+      } else if (diffDays === 2) {
+        displayText = '모레';
+      } else if (diffDays > 2) {
+        displayText = `${diffDays}일 후 (${formatDate})`;
+      } else {
+        displayText = formatDate;
+      }
+      
+      return {
+        date,
+        displayText,
+        diffDays,
+        formatDate
+      };
+    },
+    async getWeatherDataForDate(targetDate) {
+      try {
+        // Props로 받은 위치 정보 사용, 없으면 기본값 (부산)
+        const lat = this.location?.latitude || 35.1796;
+        const lon = this.location?.longitude || 129.0756;
+        const dateStr = targetDate.toISOString().split('T')[0];
+        const today = new Date().toISOString().split('T')[0];
+        
+        // 오늘인 경우 실시간 데이터 + 예보 데이터 조합
+        if (dateStr === today) {
+          // 현재 실시간 데이터
+          const currentUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,precipitation,wind_speed_10m,wind_direction_10m&timezone=Asia%2FSeoul`;
+          const currentResponse = await fetch(currentUrl);
+          const currentData = await currentResponse.json();
+          
+          // 오늘 예보 데이터 (강수량 총합을 위해)
+          const dailyUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&timezone=Asia%2FSeoul&start_date=${dateStr}&end_date=${dateStr}`;
+          const dailyResponse = await fetch(dailyUrl);
+          const dailyData = await dailyResponse.json();
+          
+          // 해양 데이터
+          const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=sea_surface_temperature,wave_height&timezone=Asia%2FSeoul`;
+          const marineResponse = await fetch(marineUrl);
+          const marineData = await marineResponse.json();
+          
+          return {
+            temperature: currentData.current?.temperature_2m || '알 수 없음',
+            windSpeed: currentData.current?.wind_speed_10m || '알 수 없음',
+            windDirection: currentData.current?.wind_direction_10m || '알 수 없음',
+            precipitation: dailyData.daily?.precipitation_sum?.[0] || currentData.current?.precipitation || '0',
+            seaTemperature: marineData.current?.sea_surface_temperature || '알 수 없음',
+            waveHeight: marineData.current?.wave_height || '알 수 없음'
+          };
+        } else {
+          // 미래 날짜는 예보 데이터
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,winddirection_10m_dominant&timezone=Asia%2FSeoul&start_date=${dateStr}&end_date=${dateStr}`;
+          
+          const weatherResponse = await fetch(url);
+          const weatherData = await weatherResponse.json();
+          
+          // 해양 데이터
+          const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=sea_surface_temperature_max,wave_height_max&timezone=Asia%2FSeoul&start_date=${dateStr}&end_date=${dateStr}`;
+          const marineResponse = await fetch(marineUrl);
+          const marineData = await marineResponse.json();
+          
+          const daily = weatherData.daily;
+          const marinDaily = marineData.daily;
+          
+          if (daily && daily.time && daily.time.length > 0) {
+            return {
+              temperature: `${daily.temperature_2m_min[0]}~${daily.temperature_2m_max[0]}`,
+              windSpeed: daily.windspeed_10m_max[0] || '알 수 없음',
+              windDirection: daily.winddirection_10m_dominant[0] || '알 수 없음',
+              precipitation: daily.precipitation_sum[0] || '0',
+              seaTemperature: marinDaily?.sea_surface_temperature_max?.[0] || '알 수 없음',
+              waveHeight: marinDaily?.wave_height_max?.[0] || '알 수 없음'
+            };
+          } else {
+            throw new Error('예보 데이터 없음');
+          }
+        }
+      } catch (error) {
+        console.error('날씨 데이터 불러오기 실패:', error);
+        return {
+          temperature: '알 수 없음',
+          windSpeed: '알 수 없음',
+          windDirection: '알 수 없음',
+          precipitation: '0',
+          seaTemperature: '알 수 없음',
+          waveHeight: '알 수 없음'
+        };
+      }
+    },
+    async getTideDataForDate(targetDate) {
+      try {
+        const year = targetDate.getFullYear();
+        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+        // Props로 받은 위치 정보의 지역 코드 사용, 없으면 기본값 (가덕도)
+        const locationCode = this.location?.value || 'DT_0063';
+        const response = await fetch(`${process.env.VUE_APP_API_URL || 'http://localhost:8080'}/api/sea-tides/${year}/${month}/${locationCode}`);
+        const tideData = await response.json();
+        
+        const targetDateStr = `${year}-${month}-${String(targetDate.getDate()).padStart(2, '0')}`;
+        const dayTide = tideData.find(tide => tide.tideDate === targetDateStr);
+        
+        if (dayTide) {
+          const highTides = [];
+          const lowTides = [];
+          
+          if (dayTide.first_high_tide_time) {
+            highTides.push(`${dayTide.first_high_tide_time.slice(0, 5)} (${dayTide.first_high_tide}cm)`);
+          }
+          if (dayTide.second_high_tide_time) {
+            highTides.push(`${dayTide.second_high_tide_time.slice(0, 5)} (${dayTide.second_high_tide}cm)`);
+          }
+          
+          if (dayTide.first_low_tide_time) {
+            lowTides.push(`${dayTide.first_low_tide_time.slice(0, 5)} (${dayTide.first_low_tide}cm)`);
+          }
+          if (dayTide.second_low_tide_time) {
+            lowTides.push(`${dayTide.second_low_tide_time.slice(0, 5)} (${dayTide.second_low_tide}cm)`);
+          }
+          
+          return {
+            highTide: highTides.length > 0 ? highTides.join(', ') : '정보 없음',
+            lowTide: lowTides.length > 0 ? lowTides.join(', ') : '정보 없음'
+          };
+        } else {
+          return {
+            highTide: '정보 없음',
+            lowTide: '정보 없음'
+          };
+        }
+      } catch (error) {
+        console.error('조류 데이터 불러오기 실패:', error);
+        return {
+          highTide: '정보 없음',
+          lowTide: '정보 없음'
+        };
+      }
+    },
+    // GSAP 애니메이션 메소드들
+    initFishAnimation() {
+      // 물고기 아이콘의 기본 떠다니는 애니메이션
+      if (this.$refs.fishIcon) {
+        gsap.set(this.$refs.fishIcon, { transformOrigin: "center center" });
+        
+        // 더 자연스러운 상하 떠다니는 움직임
+        gsap.to(this.$refs.fishIcon, {
+          y: -8,
+          duration: 2.5,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1
+        });
+        
+        // 좌우로 부드럽게 흔들리는 움직임 (물결 효과)
+        gsap.to(this.$refs.fishIcon, {
+          x: 3,
+          duration: 3.5,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1
+        });
+        
+        // 살짝 회전하며 헤엄치는 느낌
+        gsap.to(this.$refs.fishIcon, {
+          rotation: 5,
+          duration: 4,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1
+        });
+        
+        // 크기가 살짝 변하는 호흡 효과
+        gsap.to(this.$refs.fishIcon, {
+          scale: 1.05,
+          duration: 2.8,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1
+        });
+        
+        // 컨테이너 전체도 살짝 떠다니게
+        if (this.$refs.chatIcon) {
+          gsap.to(this.$refs.chatIcon, {
+            y: -3,
+            duration: 3,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1
+          });
+        }
+      }
+    },
+    onHover() {
+      if (this.$refs.fishIcon) {
+        // 호버 시 물고기가 활발해지는 애니메이션
+        gsap.to(this.$refs.fishIcon, {
+          scale: 1.1,
+          rotation: 10,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+        
+        // 빠른 물결 효과 (제거 - 배경 없음)
+        // gsap.to(this.$refs.chatIcon, {
+        //   boxShadow: "0 8px 25px rgba(59, 130, 246, 0.4)",
+        //   duration: 0.3
+        // });
+      }
+    },
+    onHoverOut() {
+      if (this.$refs.fishIcon) {
+        // 호버 해제 시 원래대로
+        gsap.to(this.$refs.fishIcon, {
+          scale: 1,
+          rotation: 0,
+          duration: 0.5,
+          ease: "power2.out"
+        });
+        
+        // gsap.to(this.$refs.chatIcon, {
+        //   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+        //   duration: 0.3
+        // });
+      }
+    },
+    toggleChat() {
+      // 클릭 시 물고기가 점프하는 애니메이션
+      if (!this.isOpen && this.$refs.fishIcon) {
+        gsap.to(this.$refs.fishIcon, {
+          y: -15,
+          rotation: 15,
+          scale: 0.9,
+          duration: 0.2,
+          ease: "power2.out",
+          onComplete: () => {
+            gsap.to(this.$refs.fishIcon, {
+              y: 0,
+              rotation: 0,
+              scale: 1,
+              duration: 0.3,
+              ease: "bounce.out"
+            });
+          }
+        });
+      }
+      
+      if (this.isOpen) {
+        // 채팅창 닫기 애니메이션
+        this.closeChatWindow()
+      } else {
+        // 채팅창 열기
+        this.isOpen = true
+        this.$nextTick(() => {
+          this.openChatWindow()
+          if (this.messages.length === 0 && this.apiKey) {
+            this.addWelcomeMessage()
+          }
+        })
+      }
+    },
+    openChatWindow() {
+      if (this.$refs.chatWindow) {
+        // 초기 상태 설정
+        gsap.set(this.$refs.chatWindow, {
+          scale: 0.8,
+          opacity: 0,
+          y: 20,
+          transformOrigin: "bottom right"
+        });
+        
+        // 나타나는 애니메이션
+        gsap.to(this.$refs.chatWindow, {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+          ease: "back.out(1.7)"
+        });
+      }
+    },
+    closeChatWindow() {
+      if (this.$refs.chatWindow) {
+        gsap.to(this.$refs.chatWindow, {
+          scale: 0.8,
+          opacity: 0,
+          y: 20,
+          duration: 0.2,
+          ease: "power2.in",
+          onComplete: () => {
+            this.isOpen = false
+          }
+        });
+      }
+    },
+    flashFishIcon() {
+      // 채팅창이 열려있을 때는 아이콘이 없으므로 스킵
+      if (this.isOpen || !this.$refs.fishIcon) return
+      
+      // 물고기 아이콘이 반짝이는 효과
+      gsap.to(this.$refs.fishIcon, {
+        scale: 1.2,
+        duration: 0.1,
+        ease: "power2.out",
+        yoyo: true,
+        repeat: 3
+      });
+      
+      // 배경도 함께 반짝임 (제거 - 배경 없음)
+      // gsap.to(this.$refs.chatIcon, {
+      //   boxShadow: "0 0 20px rgba(59, 130, 246, 0.8)",
+      //   duration: 0.1,
+      //   ease: "power2.out",
+      //   yoyo: true,
+      //   repeat: 3,
+      //   onComplete: () => {
+      //     gsap.to(this.$refs.chatIcon, {
+      //       boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+      //       duration: 0.3
+      //     });
+      //   }
+      // });
     }
   }
 }
@@ -231,20 +702,20 @@ export default {
 .chatbot-icon {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  /* border-radius: 50%; */
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); */
   transition: all 0.3s ease;
 }
 
 .chatbot-icon:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  /* transform: scale(1.1); */
+  /* box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); */
 }
 
 .chat-window {
