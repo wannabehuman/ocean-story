@@ -288,3 +288,71 @@
   height: 100%;
   max-height: 630px;
 }
+
+
+
+/* MEDIA 720PX */
+@media all and (max-width: 720px) {
+
+  .wrap.fishmap-wrap {
+    padding: 100px 20px;
+    box-sizing: border-box;
+  }
+
+  .sub-Container {
+    width: 100%;
+  }
+
+  .map-page {
+    padding: 40px 20px 60px;
+    gap: 100px;
+  }
+
+  .map-image {
+    width: 100%;
+    height: unset;
+    scale: 1.3;
+    margin: unset;
+    margin-top: 80px;
+  }
+
+  .marker {
+    width : 10px;
+    height: 10px;
+    padding: unset;
+    box-sizing: content-box;
+  }
+
+  .info-section {
+    width: 100%;
+  }
+
+  .Fish-section {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .status-icons {
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+
+  .fish-list {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .fish-card {
+    width: 100%;
+  }
+
+  .fish-image {
+    width: 40%;
+  }
+
+  .fish-info {
+    width: 60%;
+  }
+  
+}
+/* MEDIA 720PX // */

@@ -185,6 +185,20 @@
 
 
 
-/* 반응형 480PX */
-@media (max-width: 480px) {}
-/* 반응형 480PX // */
+/* 반응형 720PX */
+@media (max-width: 720px) {
+  .wrap.weather-wrap {
+
+    .wthr-icon-box {
+      .wthr-icon {
+        .loti-icon { top: 80px; }
+      }
+    }
+
+    .wthr-cont {
+      height: 400px;
+    }
+
+  }
+}
+/* 반응형 720PX // */

@@ -751,4 +751,19 @@ export default defineComponent({
 }
 
 
+/* media 720px */
+@media all and (max-width: 720px) {
+  .calendar-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .tide-time {
+    font-family: sans-serif !important;
+    font-weight: 100;
+    font-size: 10px;
+  }
+}
+
+
 </style>
