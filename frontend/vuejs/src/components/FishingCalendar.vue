@@ -763,6 +763,12 @@ export default defineComponent({
     font-weight: 100;
     font-size: 10px;
   }
+
+  .location-select {
+    transform: unset;
+    top: -40px;
+    left: -10px;
+  }
 }
 
 

@@ -36,7 +36,8 @@
 }
 
 .map-section {
-
+  width: 100%;
+  max-width: 630px;
   position: relative; /* ✅ 반드시 필요! */
 
   /* flex: 0.9; */
@@ -98,10 +99,8 @@
   background-position: 60px -10px;   */
 
 
-  width: 630px;
-  height: 630px;
-  margin-left: -50px;  /* ✅ 줄어든 만큼 땡겨오기 */
-  margin-right: -110px;  /* ✅ 줄어든 만큼 땡겨오기 */
+  width: 100%;
+  /* height: 630px; */
 
 }
 
@@ -308,12 +307,14 @@
     gap: 100px;
   }
 
+  .map-section {
+    margin-top: 40px;
+  }
+
   .map-image {
     width: 100%;
     height: unset;
-    scale: 1.3;
     margin: unset;
-    margin-top: 80px;
   }
 
   .marker {

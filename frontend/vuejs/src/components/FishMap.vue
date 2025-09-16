@@ -11,7 +11,7 @@
             v-for="(marker, index) in markerList"
             :key="index"
             class="tooltip-wrapper"
-            :style="{ top: marker.top + 'px', left: marker.left + 'px' }"
+            :style="{ top: marker.top + '%', left: marker.left + '%' }"
           >
             <button class="marker" @click="handleMarkerClick(marker.label, marker.point)"></button>
             <span class="tooltip-text">{{ marker.label}}</span>
@@ -99,26 +99,47 @@ export default {
       // 세부 지역 선택 
       regions: ['녹산동', '용원동', '신호동', '하단동', '괴정동'],
 
+      // // 지역별 마커 추가
+      // markerList: [
+      //   { top: 460,  left: 360,   label: '가덕도'  , point: 'SE' },
+      //   { top: 490,  left: 355,   label: '거제도'  , point: 'SE' },
+      //   { top: 340,  left: 135,   label: '군산'    , point: 'WS' },
+      //   { top: 145,  left: 405,   label: '동해항'  , point: 'EN' },
+      //   { top: 440,  left: 340,   label: '마산'    , point: 'SE' },
+      //   { top: 500,  left: 115,   label: '목포항'  , point: 'SW' },
+      //   { top: 450,  left: 390,   label: '부산'    , point: 'SE' },
+      //   { top: 615,  left: 215,   label: '서귀포'  , point: 'Jeju' },
+      //   { top: 585,  left: 205,   label: '제주'    , point: 'Jeju' },
+      //   { top: 55,   left: 350,   label: '속초'    , point: 'EN' },
+      //   { top: 500,  left: 255,   label: '여수'    , point: 'SW' },
+      //   { top: 145,  left: 485,   label: '울릉도'  , point: 'Ulleungdo' },
+      //   { top: 400,  left: 430,   label: '울산'    , point: 'ES' },
+      //   { top: 155,  left: 145,   label: '인천송도', point: 'WN' },
+      //   { top: 220,  left: 100,   label: '태안'    , point: 'WN' },
+      //   { top: 485,  left: 330,   label: '통영'    , point: 'SE' },
+      //   { top: 205,  left: 160,   label: '평택'    , point: 'WN' },
+      //   { top: 325,  left: 430,   label: '포항'    , point: 'ES' },
+      // ],
       // 지역별 마커 추가
       markerList: [
-        { top: 460,  left: 360,   label: '가덕도'  , point: 'SE' },
-        { top: 490,  left: 355,   label: '거제도'  , point: 'SE' },
-        { top: 340,  left: 135,   label: '군산'    , point: 'WS' },
-        { top: 145,  left: 405,   label: '동해항'  , point: 'EN' },
-        { top: 440,  left: 340,   label: '마산'    , point: 'SE' },
-        { top: 500,  left: 115,   label: '목포항'  , point: 'SW' },
-        { top: 450,  left: 390,   label: '부산'    , point: 'SE' },
-        { top: 615,  left: 215,   label: '서귀포'  , point: 'Jeju' },
-        { top: 585,  left: 205,   label: '제주'    , point: 'Jeju' },
-        { top: 55,   left: 350,   label: '속초'    , point: 'EN' },
-        { top: 500,  left: 255,   label: '여수'    , point: 'SW' },
-        { top: 145,  left: 485,   label: '울릉도'  , point: 'Ulleungdo' },
-        { top: 400,  left: 430,   label: '울산'    , point: 'ES' },
-        { top: 155,  left: 145,   label: '인천송도', point: 'WN' },
-        { top: 220,  left: 100,   label: '태안'    , point: 'WN' },
-        { top: 485,  left: 330,   label: '통영'    , point: 'SE' },
-        { top: 205,  left: 160,   label: '평택'    , point: 'WN' },
-        { top: 325,  left: 430,   label: '포항'    , point: 'ES' },
+        { top: 73.01,  left: 65.08,   label: '가덕도'  , point: 'SE' },
+        { top: 77.78,  left: 64.28,   label: '거제도'  , point: 'SE' },
+        { top: 53.97,  left: 29.36,   label: '군산'    , point: 'WS' },
+        { top: 23.01,  left: 72.22,   label: '동해항'  , point: 'EN' },
+        { top: 69.84,  left: 61.90,   label: '마산'    , point: 'SE' },
+        { top: 79.36,  left: 26.19,   label: '목포항'  , point: 'SW' },
+        { top: 71.43,  left: 69.84,   label: '부산'    , point: 'SE' },
+        { top: 97.62,  left: 42.06,   label: '서귀포'  , point: 'Jeju' },
+        { top: 92.86,  left: 40.48,   label: '제주'    , point: 'Jeju' },
+        { top:  8.73,  left: 63.49,   label: '속초'    , point: 'EN' },
+        { top: 79.36,  left: 48.41,   label: '여수'    , point: 'SW' },
+        { top: 23.01,  left: 84.92,   label: '울릉도'  , point: 'Ulleungdo' },
+        { top: 63.49,  left: 76.19,   label: '울산'    , point: 'ES' },
+        { top: 24.60,  left: 30.95,   label: '인천송도', point: 'WN' },
+        { top: 34.92,  left: 23.81,   label: '태안'    , point: 'WN' },
+        { top: 76.98,  left: 60.32,   label: '통영'    , point: 'SE' },
+        { top: 32.54,  left: 33.33,   label: '평택'    , point: 'WN' },
+        { top: 51.59,  left: 76.19,   label: '포항'    , point: 'ES' },
       ],
 
       //물고기 리스트 추가 
