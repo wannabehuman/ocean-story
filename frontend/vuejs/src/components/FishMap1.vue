@@ -13,7 +13,7 @@
             class="tooltip-wrapper"
             :style="{ top: marker.top + '%', left: marker.left + '%' }"
           >
-            <button class="marker" @click="handleMarkerClick(marker.label, marker.point, marker.latitude, marker.longitude)"></button>
+            <button class="marker" @click="handleMarkerClick(marker.label, marker.point)"></button>
             <span class="tooltip-text">{{ marker.label}}</span>
           </div>
 
@@ -94,8 +94,6 @@ export default {
       fishinform: [],  // 또는 null, {}, "" 등 원하는 초기값
       Curlabel:"",
       Curpoint: "SW",
-      latitude: 3.33,
-      longitude:3.33,
       Curtemp:  18,
       ShowFishType : true, // true - 시즌어종, False - 금어종
       // 세부 지역 선택 
@@ -103,24 +101,24 @@ export default {
 
       // 지역별 마커 추가
       markerList: [
-        { top: 73.01,  left: 65.08,   label: '가덕도'  , point: 'SE'        , latitude: 35.024, longitude: 128.81   },
-        { top: 77.78,  left: 64.28,   label: '거제도'  , point: 'SE'        , latitude: 34.801, longitude: 128.699  },
-        { top: 53.97,  left: 29.36,   label: '군산'    , point: 'WS'        , latitude: 35.975, longitude: 126.563  },
-        { top: 23.01,  left: 72.22,   label: '동해항'  , point: 'EN'        , latitude: 37.494, longitude: 129.143  },
-        { top: 69.84,  left: 61.90,   label: '마산'    , point: 'SE'        , latitude: 35.197, longitude: 128.576  },
-        { top: 79.36,  left: 26.19,   label: '목포항'  , point: 'SW'        , latitude: 34.779, longitude: 126.375  },
-        { top: 71.43,  left: 69.84,   label: '부산'    , point: 'SE'        , latitude: 35.096, longitude: 129.035  },
-        { top: 97.62,  left: 42.06,   label: '서귀포'  , point: 'Jeju'      , latitude: 33.24 , longitude: 126.561  },
-        { top: 92.86,  left: 40.48,   label: '제주'    , point: 'Jeju'      , latitude: 38.207, longitude: 128.594  },
-        { top:  8.73,  left: 63.49,   label: '속초'    , point: 'EN'        , latitude: 34.747, longitude: 127.765  },
-        { top: 79.36,  left: 48.41,   label: '여수'    , point: 'SW'        , latitude: 37.491, longitude: 130.913  },
-        { top: 23.01,  left: 84.92,   label: '울릉도'  , point: 'Ulleungdo' , latitude: 35.501, longitude: 129.387  },
-        { top: 63.49,  left: 76.19,   label: '울산'    , point: 'ES'        , latitude: 37.338, longitude: 126.586  },
-        { top: 24.60,  left: 30.95,   label: '인천송도', point: 'WN'        , latitude: 33.527, longitude: 126.543  },
-        { top: 34.92,  left: 23.81,   label: '태안'    , point: 'WN'        , latitude: 36.913, longitude: 126.238  },
-        { top: 76.98,  left: 60.32,   label: '통영'    , point: 'SE'        , latitude: 34.827, longitude: 128.434  },
-        { top: 32.54,  left: 33.33,   label: '평택'    , point: 'WN'        , latitude: 36.966, longitude: 126.822  },
-        { top: 51.59,  left: 76.19,   label: '포항'    , point: 'ES'        , latitude: 36.051, longitude: 129.376  },
+        { top: 73.01,  left: 65.08,   label: '가덕도'  , point: 'SE'        },
+        { top: 77.78,  left: 64.28,   label: '거제도'  , point: 'SE'        },
+        { top: 53.97,  left: 29.36,   label: '군산'    , point: 'WS'        },
+        { top: 23.01,  left: 72.22,   label: '동해항'  , point: 'EN'        },
+        { top: 69.84,  left: 61.90,   label: '마산'    , point: 'SE'        },
+        { top: 79.36,  left: 26.19,   label: '목포항'  , point: 'SW'        },
+        { top: 71.43,  left: 69.84,   label: '부산'    , point: 'SE'        },
+        { top: 97.62,  left: 42.06,   label: '서귀포'  , point: 'Jeju'      },
+        { top: 92.86,  left: 40.48,   label: '제주'    , point: 'Jeju'      },
+        { top:  8.73,  left: 63.49,   label: '속초'    , point: 'EN'        },
+        { top: 79.36,  left: 48.41,   label: '여수'    , point: 'SW'        },
+        { top: 23.01,  left: 84.92,   label: '울릉도'  , point: 'Ulleungdo' },
+        { top: 63.49,  left: 76.19,   label: '울산'    , point: 'ES'        },
+        { top: 24.60,  left: 30.95,   label: '인천송도', point: 'WN'        },
+        { top: 34.92,  left: 23.81,   label: '태안'    , point: 'WN'        },
+        { top: 76.98,  left: 60.32,   label: '통영'    , point: 'SE'        },
+        { top: 32.54,  left: 33.33,   label: '평택'    , point: 'WN'        },
+        { top: 51.59,  left: 76.19,   label: '포항'    , point: 'ES'        },
       ],
       fishList: [],
       selectedFish: null,
@@ -157,10 +155,9 @@ export default {
       }
     },
 
-    async UpdateFishList()
+    UpdateFishList()
     {
       let indices;
-      this.Curtemp = await this.Get_RegionTemp(this.latitude, this.longitude)
       const todaystr = new Date().toISOString().slice(0, 10);
       if(this.ShowFishType) indices = this.filterFish(this.Curpoint, this.Curtemp, todaystr);
       else                  indices = this.filterProtectFish(this.Curpoint, todaystr);
@@ -168,26 +165,10 @@ export default {
     },
 
 
-    async Get_RegionTemp(latitude, longitude) {
-      try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m`;
-        const resp = await fetch(url);
-        const data = await resp.json();
-      
-        // 현재 온도 값 반환
-        return data.current?.temperature_2m ?? null;
-      } catch (e) {
-        console.error("날씨 API 호출 실패:", e);
-        return null;
-      }
-    },
-
-    handleMarkerClick(label, point, latitude, longitude) 
+    handleMarkerClick(label, point) 
     { 
-      this.Curlabel  = label;
-      this.Curpoint  = point;
-      this.latitude  = latitude;
-      this.longitude = longitude;
+      this.Curlabel = label;
+      this.Curpoint = point;
       this.UpdateFishList();
     },
 
